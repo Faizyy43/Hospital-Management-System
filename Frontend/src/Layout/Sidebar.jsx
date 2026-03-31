@@ -23,7 +23,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         {/* Logo */}
-        <h2 className="text-xl font-semibold mb-10 bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
+        <h2 className="text-xl font-semibold mb-10 bg-linear-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
           HMS
         </h2>
 

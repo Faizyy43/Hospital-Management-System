@@ -7,7 +7,7 @@ const Layout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-<div className="flex h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+<div className="flex h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
           <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       
       <div className="flex flex-col flex-1">
