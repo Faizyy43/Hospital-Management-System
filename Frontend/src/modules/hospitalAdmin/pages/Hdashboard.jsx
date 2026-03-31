@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Dashboard = () => {
+const Hdashboard = () => {
   // 🔥 Backend-ready data (replace later with API)
   const stats = [
     { title: "Total Patients", value: 1240 },
@@ -34,10 +34,10 @@ const Dashboard = () => {
     <div className="space-y-6">
       
       {/* Header */}
-      <h1 className="text-2xl font-semibold text-gray-800">
+      <h1 className="text-2xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
         Hospital Dashboard
       </h1>
-    
+
       {/* 🔹 Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {stats.map((item, i) => (
@@ -117,4 +117,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Hdashboard;
