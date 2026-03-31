@@ -28,9 +28,13 @@ const Patients = () => {
         setForm({ name: "", age: "", disease: "" });
     };
 
-    const handleDelete = (id) => {
-        setPatients(patients.filter((p) => p.id !== id));
-    };
+   const handleUpdate = () => {
+  setPatients(patients.map(p =>
+    p.id === editingPatient.id ? editingPatient : p
+  ));
+  setEditingPatient(null);
+};
+    const [editingPatient, setEditingPatient] = useState(null);
 
     return (
         <div className="space-y-6">
@@ -94,6 +98,12 @@ className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-2 rou
                                 <td>{p.disease}</td>
                                 <td>
                                     <button
+  onClick={() => setEditingPatient(p)}
+  className="text-blue-500 mr-3"
+>
+  Edit
+</button>
+                                    <button
                                         onClick={() => handleDelete(p.id)}
                                         className="text-red-500"
                                     >
@@ -104,6 +114,61 @@ className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-2 rou
                         ))}
                     </tbody>
                 </table>
+                {editingPatient && (
+  <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
+
+    <div className="bg-white/80 backdrop-blur-xl p-6 rounded-2xl shadow-lg w-96">
+
+      <h2 className="text-lg font-semibold mb-4">
+        Edit Patient
+      </h2>
+
+      <div className="space-y-3">
+
+        <input
+          value={editingPatient.name}
+          onChange={(e) =>
+            setEditingPatient({ ...editingPatient, name: e.target.value })
+          }
+          className="w-full p-2 rounded-lg bg-gray-100 outline-none"
+        />
+
+        <input
+          value={editingPatient.age}
+          onChange={(e) =>
+            setEditingPatient({ ...editingPatient, age: e.target.value })
+          }
+          className="w-full p-2 rounded-lg bg-gray-100 outline-none"
+        />
+
+        <input
+          value={editingPatient.disease}
+          onChange={(e) =>
+            setEditingPatient({ ...editingPatient, disease: e.target.value })
+          }
+          className="w-full p-2 rounded-lg bg-gray-100 outline-none"
+        />
+      </div>
+
+      <div className="flex justify-end gap-3 mt-5">
+        <button
+          onClick={() => setEditingPatient(null)}
+          className="px-4 py-2 rounded-lg bg-gray-200"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={handleUpdate}
+          className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
+        >
+          Save
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
             </div>
 
         </div>

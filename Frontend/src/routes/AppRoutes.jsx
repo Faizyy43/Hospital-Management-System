@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "../layout/Layout";
-import Dashboard from "../pages/Dashboard";
-import Patients from "../pages/Patients";
-import Appointments from "../pages/Appointments";
+import Dashboard from "../modules/hospitalAdmin/pages/Dashboard";
+import Patients from "../modules/hospitalAdmin/pages/Patients";
+import Appointments from "../modules/hospitalAdmin/pages/Appointments";
 
 const AppRoutes = () => {
   return (
