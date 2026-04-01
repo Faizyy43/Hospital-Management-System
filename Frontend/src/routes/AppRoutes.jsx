@@ -17,6 +17,11 @@ import PatientDashboard from "../modules/Patient/pages/PatientDashboard";
 import PrivateRoute from "./PrivateRoute";
 import RegisterForm from "../modules/Patient/pages/RegisterForm";
 
+import Appointments from "../modules/hospitalAdmin/pages/Appointments";
+import Doctors from "../modules/hospitalAdmin/pages/Doctors";
+import Staff from "../modules/hospitalAdmin/pages/Staff";
+import OPD from "../modules/hospitalAdmin/pages/OPD";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -52,12 +57,21 @@ const AppRoutes = () => {
             <Layout />
           </PrivateRoute>
         }
-      >
-        <Route index element={<Hdashboard />} />
+      ></Route>
+      <Route index element={<Hdashboard />} />
 
-        {/* 🔹 Admin Routes (WITH sidebar) */}
-        <Route path="/hadmin/patients" element={<Patients />} />
-        <Route path="/hadmin/appointments" element={<Happointments />} />
+      {/* 🔹 Admin Routes (WITH sidebar) */}
+      <Route path="/hadmin/patients" element={<Patients />} />
+      <Route path="/hadmin/appointments" element={<Happointments />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="patients" element={<Patients />} />
+        <Route path="appointments" element={<Appointments />} />
+        <Route path="doctors" element={<Doctors />} />
+
+        {/* Hospital Setup */}
+        <Route path="staff" element={<Staff />} />
+        <Route path="opd" element={<OPD />} />
       </Route>
     </Routes>
   );
