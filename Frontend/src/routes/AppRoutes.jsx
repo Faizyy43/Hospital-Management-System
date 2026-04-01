@@ -9,6 +9,8 @@ import Analytics from "../modules/masterAdmin/analytics/pages/Analytics";
 
 // Layout
 import AdminLayout from "../Layout/AdminLayout";
+import HospitalDetail from "../modules/masterAdmin/hospitals/components/HospitalDetail";
+import PatientDetail from "../modules/masterAdmin/hospitals/components/PatientDetail";
 
 const AppRoutes = () => {
   return (
@@ -21,6 +23,8 @@ const AppRoutes = () => {
         <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="hospitals" element={<HospitalList />} />
+        <Route path="hospitals/:id" element={<HospitalDetail />} />
+        <Route path="patients/:id" element={<PatientDetail />} />
         <Route path="approvals" element={<ApprovalList />} />
         <Route path="analytics" element={<Analytics />} />
       </Route>
