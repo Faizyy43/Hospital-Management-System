@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 // Layouts
-import Layout from "../Context/Layout/Layout";
+import Layout from "../Layout/Layout";
 
 // Pages
 import Patients from "../modules/hospitalAdmin/pages/Patients";
@@ -16,8 +16,6 @@ import Dashboard from "../modules/Patient/pages/Dashboard";
 import PatientDashboard from "../modules/Patient/pages/PatientDashboard";
 import PrivateRoute from "./PrivateRoute";
 import RegisterForm from "../modules/Patient/pages/RegisterForm";
-
-import Appointments from "../modules/hospitalAdmin/pages/Appointments";
 import Doctors from "../modules/hospitalAdmin/pages/Doctors";
 import Staff from "../modules/hospitalAdmin/pages/Staff";
 import OPD from "../modules/hospitalAdmin/pages/OPD";
@@ -26,9 +24,6 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* 🔹 Public Routes (NO sidebar) */}
-      <Route path="/" element={<Home />} />
-
-      {/* Main Portal */}
       <Route path="/" element={<Home />} />
       <Route path="/hospitals" element={<Hospitals />} />
       <Route path="/appointments" element={<Appointments />} />
@@ -49,7 +44,7 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Hospital Admin */}
+      {/* 🔥 Hospital Admin (FIXED STRUCTURE) */}
       <Route
         path="/hadmin"
         element={
@@ -57,16 +52,13 @@ const AppRoutes = () => {
             <Layout />
           </PrivateRoute>
         }
-      ></Route>
-      <Route index element={<Hdashboard />} />
+      >
+        {/* ✅ Default dashboard */}
+        <Route index element={<Hdashboard />} />
 
-      {/* 🔹 Admin Routes (WITH sidebar) */}
-      <Route path="/hadmin/patients" element={<Patients />} />
-      <Route path="/hadmin/appointments" element={<Happointments />} />
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Dashboard />} />
+        {/* ✅ Nested routes (NOW Sidebar + Topbar WILL SHOW) */}
         <Route path="patients" element={<Patients />} />
-        <Route path="appointments" element={<Appointments />} />
+        <Route path="happointments" element={<Happointments />} />
         <Route path="doctors" element={<Doctors />} />
 
         {/* Hospital Setup */}

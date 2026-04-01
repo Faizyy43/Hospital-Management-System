@@ -1,4 +1,4 @@
-import ScrollToTop from "";
+import ScrollToTop from "./Layout/ScrollToTop";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
