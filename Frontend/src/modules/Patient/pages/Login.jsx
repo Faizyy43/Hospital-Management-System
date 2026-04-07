@@ -6,27 +6,76 @@ import { GoogleLogin } from "@react-oauth/google";
 
 export default function Login() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // kept (not used)
   const [step, setStep] = useState("login");
   const [otp, setOtp] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [error, setError] = useState("");
   const [timer, setTimer] = useState(0);
+  const [attemptCount, setAttemptCount] = useState(0);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [lastTriedEmail, setLastTriedEmail] = useState("");
 
   const navigate = useNavigate();
 
   // 🔢 SEND OTP (MAIN LOGIN FLOW)
-  const sendOtp = () => {
+  const sendOtp = async () => {
     setError("");
+    setShowAlert(false);
+
+    // ✅ EMPTY EMAIL CHECK
+    if (!email) {
+      setAlertMsg("Email is required");
+      setShowAlert(true);
+      return;
+    }
+
+    // ✅ EMAIL FORMAT CHECK (professional)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setAlertMsg("Enter a valid email address");
+      setShowAlert(true);
+      return;
+    }
 
     const user = fakeUsers.find((u) => u.email === email);
-    if (!user) return setError("User not found");
+
+    if (!user) {
+      if (!lastTriedEmail) {
+        // ✅ FIRST TIME
+        setLastTriedEmail(email);
+
+        setAlertMsg("User not found. Please check your email.");
+        setShowAlert(true);
+      } else if (email !== lastTriedEmail) {
+        // ✅ SECOND TIME (DIFFERENT EMAIL)
+        setAlertMsg("Email not registered. Redirecting to signup...");
+        setShowAlert(true);
+
+        setTimeout(() => {
+          navigate("/register");
+        }, 1000);
+      } else {
+        // same email again → still first level warning
+        setAlertMsg("User not found. Try a different email.");
+        setShowAlert(true);
+      }
+
+      return;
+    }
+
+    // 🔐 REAL OTP API (optional - connect backend)
+    /*
+  await fetch("/api/send-otp", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+  */
 
     const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedOtp(newOtp);
     setStep("otp");
 
-    // ⏳ resend timer
     setTimer(30);
     const interval = setInterval(() => {
       setTimer((prev) => {
@@ -38,23 +87,40 @@ export default function Login() {
       });
     }, 1000);
 
-    alert("OTP (demo): " + newOtp);
+    // Demo OTP
+    setAlertMsg("OTP sent successfully");
+    setShowAlert(true);
+
+    console.log("OTP:", newOtp);
   };
 
   // ✅ VERIFY OTP
   const verifyOtp = () => {
+    // ❌ EMPTY OTP
+    if (!otp) {
+      setError("Please enter OTP");
+      return;
+    }
+
+    // ❌ INVALID LENGTH
+    if (otp.length !== 6) {
+      setError("OTP must be 6 digits");
+      return;
+    }
+
+    // ❌ WRONG OTP
     if (otp !== generatedOtp) {
       setError("Invalid OTP");
       return;
     }
 
+    // ✅ SUCCESS
     const user = fakeUsers.find((u) => u.email === email);
 
     localStorage.setItem("user", JSON.stringify(user));
 
     navigate(user.role === "patient" ? "/patient-dashboard" : "/hadmin");
   };
-
   // 🔄 GOOGLE LOGIN
   const handleGoogleSuccess = () => {
     localStorage.setItem(
@@ -94,6 +160,31 @@ export default function Login() {
             OTP Login
           </h2>
 
+          {showAlert && (
+            <div className="mb-5 flex items-center gap-3 p-4 rounded-xl border border-gray-200 bg-white shadow-lg animate-slideIn">
+              {/* Icon */}
+              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 text-lg">
+                ⚠
+              </div>
+
+              {/* Message */}
+              <p className="text-sm font-medium text-gray-700 flex-1">
+                {alertMsg}
+              </p>
+
+              {/* Close */}
+              <button
+                onClick={() => {
+                  setShowAlert(false);
+                  setEmail(""); // ✅ clear input
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
           {error && <p className="text-red-500 mb-4 text-sm">{error}</p>}
 
           {/* STEP 1 → EMAIL */}
@@ -102,10 +193,19 @@ export default function Login() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="input"
+                className={`input ${
+                  showAlert ? "border-red-400 focus:border-red-500" : ""
+                }`}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setShowAlert(false); // keep this
+                }}
               />
+
+              <p className="text-xs text-gray-400 mt-2 pl-2">
+                Enter your registered email to receive OTP
+              </p>
 
               <button onClick={sendOtp} className="btn mt-4">
                 Send OTP
@@ -114,7 +214,7 @@ export default function Login() {
           )}
 
           {/* STEP 2 → OTP */}
-          {step === "otp" && (
+          {step === "otp" && generatedOtp && (
             <>
               <p className="text-sm text-gray-500 mb-3">
                 OTP sent to <span className="font-medium">{email}</span>
@@ -124,10 +224,18 @@ export default function Login() {
                 type="text"
                 placeholder="Enter 6-digit OTP"
                 className="input text-center tracking-widest text-lg"
-                onChange={(e) => setOtp(e.target.value)}
+                value={otp}
+                onChange={(e) => {
+                  setOtp(e.target.value);
+                  setError(""); // clear error while typing
+                }}
               />
 
-              <button onClick={verifyOtp} className="btn mt-4">
+              <button
+                onClick={verifyOtp}
+                disabled={!otp}
+                className="btn mt-4 disabled:opacity-50"
+              >
                 Verify & Login
               </button>
 
@@ -178,26 +286,50 @@ export default function Login() {
       {/* Tailwind helper */}
       <style>
         {`
-          .input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            outline: none;
-          }
-          .input:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
-          }
-          .btn {
-            width: 100%;
-            background: linear-gradient(to right, #2563eb, #1d4ed8);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 500;
-          }
-        `}
+  .input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  }
+
+  .btn {
+    width: 100%;
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: 0.2s;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(37,99,235,0.25);
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slideIn {
+    animation: slideIn 0.25s ease-out;
+  }
+`}
       </style>
     </div>
   );
