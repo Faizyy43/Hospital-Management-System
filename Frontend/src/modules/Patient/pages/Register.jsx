@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaUserInjured, FaHospital } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { User, Building2 } from "lucide-react";
 
 export default function Register() {
   const [step, setStep] = useState(1);
@@ -16,105 +16,120 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen relative overflow-hidden bg-gray-50 flex flex-col">
       {/* 🔥 BACKGROUND GLOW */}
-      <div className="absolute top-20 left-20 w-72 h-72 bg-blue-200 rounded-full blur-3xl opacity-30"></div>
-      <div className="absolute bottom-10 right-20 w-72 h-72 bg-indigo-200 rounded-full blur-3xl opacity-30"></div>
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-300/20 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-300/20 rounded-full blur-[100px] pointer-events-none"></div>
 
-      {/* HERO */}
-      <div className="text-center pt-20 px-4 relative z-10">
-        <h1 className="text-4xl font-bold">
-          Welcome to <span className="text-blue-600">Healthcare Portal</span>
-        </h1>
-        <p className="text-gray-500 mt-2">
-          Smart platform for patients and hospitals
-        </p>
-      </div>
-
-      {/* CARDS */}
-      <div className="flex flex-col items-center justify-center mt-16 px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
+      <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10 w-full mb-10 pt-[100px]">
+        {/* HERO */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="grid md:grid-cols-2 gap-8 w-full max-w-3xl"
+          transition={{ duration: 0.5 }}
+          className="text-center w-full max-w-2xl mx-auto mb-16"
+        >
+          <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-blue-50 border border-blue-100">
+             <span className="text-xs font-semibold text-blue-600 tracking-wider uppercase">Join the network</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-5">
+            Welcome to <span className="text-blue-600">Healthcare Portal</span>
+          </h1>
+          <p className="text-lg text-gray-500 max-w-xl mx-auto">
+            Experience a smart platform designed for modern patients and world-class hospitals.
+          </p>
+        </motion.div>
+
+        {/* CARDS */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="grid md:grid-cols-2 gap-8 w-full max-w-[800px]"
         >
           {/* 🔥 PATIENT CARD */}
           <PremiumCard
             color="orange"
-            icon={<FaUserInjured />}
+            icon={<User />}
             title="Patient"
-            desc="Book appointments, track reports, and manage your health journey."
+            desc="Book appointments, track medical reports, and manage your complete health journey effortlessly."
             btn="Create Patient Account"
+            badge="Instant Access"
             onClick={() => handleSelectRole("patient")}
           />
 
           {/* 🔥 HOSPITAL CARD */}
           <PremiumCard
             color="blue"
-            icon={<FaHospital />}
-            title="Hospital"
-            desc="Manage patients, appointments, and hospital operations efficiently."
+            icon={<Building2 />}
+            title="Hospital Facility"
+            desc="Manage patients, doctor schedules, appointments, and hospital operations efficiently."
             btn="Apply as Hospital"
+            badge="Verified Access"
             onClick={() => handleSelectRole("hospital")}
           />
         </motion.div>
 
-        {/* LOGIN */}
-        <p className="mt-10 text-sm text-gray-600">
+        {/* LOGIN LINK */}
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mt-14 text-sm text-gray-500 font-medium bg-white/60 backdrop-blur-sm px-6 py-3 rounded-full border border-gray-100 shadow-sm"
+        >
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-blue-600 font-medium hover:underline"
+            className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition-colors px-1"
           >
-            Login
+            Login here
           </Link>
-        </p>
+        </motion.p>
       </div>
     </div>
   );
 }
 
 /* 🔥 PREMIUM CARD COMPONENT */
-function PremiumCard({ color, icon, title, desc, btn, onClick }) {
+function PremiumCard({ color, icon, title, desc, btn, badge, onClick }) {
   const isBlue = color === "blue";
 
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.96 }}
+      whileHover={{ y: -6, scale: 1.01 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="relative cursor-pointer group"
+      className="relative cursor-pointer group h-full flex"
     >
-      {/* 🔥 GRADIENT BORDER */}
-      <div
-        className={`absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r ${
-          isBlue
-            ? "from-blue-500 to-indigo-500"
-            : "from-orange-400 to-orange-600"
-        } opacity-60 group-hover:opacity-100 blur-[1px]`}
-      ></div>
+      {/* Subtile outer glow on hover */}
+      <div className={`absolute inset-0 rounded-[32px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl ${isBlue ? 'bg-blue-400/20' : 'bg-orange-400/20'}`}></div>
 
-      {/* GLASS CARD */}
-      <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/40">
-        {/* ICON */}
-        <div
-          className={`w-12 h-12 flex items-center justify-center rounded-xl mb-4 ${
-            isBlue
-              ? "bg-blue-100 text-blue-600"
-              : "bg-orange-100 text-orange-600"
-          }`}
-        >
-          {icon}
+      {/* Main Card */}
+      <div className="relative w-full h-full bg-white rounded-[28px] p-8 lg:p-10 shadow-sm hover:shadow-xl border border-gray-100 hover:border-gray-200 flex flex-col transition-all duration-300 overflow-hidden">
+        
+        {/* Top Section */}
+        <div className="flex items-start justify-between mb-8">
+          <div
+            className={`w-16 h-16 flex items-center justify-center rounded-2xl transition-colors duration-300 [&>svg]:w-8 [&>svg]:h-8 ${
+              isBlue
+                ? "bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white"
+                : "bg-orange-50 text-orange-600 group-hover:bg-orange-500 group-hover:text-white"
+            }`}
+          >
+            {icon}
+          </div>
+
+          {/* BADGE */}
+          <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold ${
+            isBlue ? "bg-blue-50 text-blue-700" : "bg-orange-50 text-orange-700"
+          }`}>
+            {badge}
+          </span>
         </div>
 
         {/* TEXT */}
-        <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="text-sm text-gray-500 mt-1">{desc}</p>
-
-        {/* BADGE */}
-        <span className="inline-block mt-3 text-xs bg-gray-100 px-3 py-1 rounded-full">
-          {isBlue ? "Verified Access" : "Instant Access"}
-        </span>
+        <h3 className="text-2xl font-bold text-gray-900 mb-3">{title}</h3>
+        <p className="text-gray-500 leading-relaxed mb-10 flex-1">{desc}</p>
 
         {/* BUTTON */}
         <button
@@ -122,19 +137,18 @@ function PremiumCard({ color, icon, title, desc, btn, onClick }) {
             e.stopPropagation(); // ✅ prevent double trigger
             onClick();
           }}
-          className={`mt-5 w-full py-2 rounded-lg text-white ${
+          className={`w-full flex items-center justify-between py-4 px-6 mt-auto rounded-xl text-sm font-semibold transition-all duration-300 ${
             isBlue
-              ? "bg-gradient-to-r from-blue-600 to-indigo-600"
-              : "bg-gradient-to-r from-orange-500 to-orange-600"
+              ? "bg-blue-50 text-blue-700 group-hover:bg-blue-600 group-hover:text-white"
+              : "bg-orange-50 text-orange-700 group-hover:bg-orange-500 group-hover:text-white"
           }`}
         >
           {btn}
+          <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
         </button>
-
-        {/* 🔥 RIPPLE EFFECT */}
-        <span className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
-          <span className="absolute w-0 h-0 bg-white/40 rounded-full group-active:w-96 group-active:h-96 transition-all duration-500"></span>
-        </span>
       </div>
     </motion.div>
   );

@@ -9,6 +9,7 @@ import Patients from "../modules/hospitalAdmin/pages/Patients";
 import Appointments from "../modules/Patient/pages/Appointments";
 import Home from "../modules/Patient/pages/Home";
 import Hospitals from "../modules/Patient/pages/Hospitals";
+import Favourites from "../modules/Patient/pages/Favourites";
 import Happointments from "../modules/hospitalAdmin/pages/Happointments";
 import Login from "../modules/Patient/pages/Login";
 import Register from "../modules/Patient/pages/Register";
@@ -25,7 +26,7 @@ const NavbarLayout = () => {
   return (
     <>
       <Navbar />
-      <div className="pt-20">
+      <div className="flex-1 w-full">
         <Outlet />
       </div>
     </>
@@ -40,20 +41,20 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/hospitals" element={<Hospitals />} />
         <Route path="/appointments" element={<Appointments />} />
-
-        {/* Protected patient */}
-        <Route
-          path="/patient-dashboard"
-          element={
-            <PrivateRoute role="patient">
-              <PatientDashboard />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/favourites" element={<Favourites />} />
       </Route>
 
-      {/* ❌ NO NAVBAR */}
+      {/* ❌ NO NAVBAR - STANDALONE LAYOUTS */}
       <Route path="/dashboard" element={<PatientDashboard />} />
+      <Route
+        path="/patient-dashboard"
+        element={
+          <PrivateRoute role="patient">
+            <PatientDashboard />
+          </PrivateRoute>
+        }
+      />
+
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/register/:role" element={<RegisterForm />} />
