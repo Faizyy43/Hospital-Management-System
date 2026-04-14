@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { HeartOff, MapPin, Stethoscope, Building2, CalendarPlus, Heart } from "lucide-react";
 import BookingModal from "./BookingModal";
@@ -6,6 +7,20 @@ import BookingModal from "./BookingModal";
 export default function Favourites() {
   const [favorites, setFavorites] = useState([]);
   const [selectedHospital, setSelectedHospital] = useState(null);
+  const navigate = useNavigate();
+  const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+  const canBook = storedUser?.role === "patient";
+
+  const handleRequestSlot = (hospital) => {
+    if (!storedUser) {
+      navigate("/login");
+      return;
+    }
+    if (!canBook) {
+      return;
+    }
+    setSelectedHospital(hospital);
+  };
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("favourites") || "[]");
@@ -19,7 +34,7 @@ export default function Favourites() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 relative flex flex-col pt-[80px]">
+    <div className="min-h-screen bg-slate-50 relative flex flex-col pt-20">
       
       {/* DASHBOARD-STYLE HEADER */}
       <div className="bg-white border-b border-slate-200">
@@ -95,13 +110,22 @@ export default function Favourites() {
                           </div>
                        </div>
 
-                       <button
-                         onClick={() => setSelectedHospital(h)}
-                         className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md font-semibold text-sm transition-colors border border-blue-700 w-full sm:w-auto shrink-0 shadow-sm"
-                       >
-                         <CalendarPlus className="w-4 h-4" />
-                         Request Slot
-                       </button>
+                       {storedUser && !canBook ? (
+                         <button
+                           disabled
+                           className="flex items-center justify-center gap-2 bg-slate-100 text-slate-500 px-5 py-2.5 rounded-md font-semibold text-sm border border-slate-200 w-full sm:w-auto shrink-0"
+                         >
+                           Patient Only
+                         </button>
+                       ) : (
+                         <button
+                           onClick={() => handleRequestSlot(h)}
+                           className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md font-semibold text-sm transition-colors border border-blue-700 w-full sm:w-auto shrink-0 shadow-sm"
+                         >
+                           <CalendarPlus className="w-4 h-4" />
+                           Request Slot
+                         </button>
+                       )}
 
                     </div>
                   </div>

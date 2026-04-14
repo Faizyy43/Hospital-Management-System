@@ -58,38 +58,30 @@ export default function Navbar() {
         {/* LOGO */}
         <Link
           to="/"
-          className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hover:opacity-90 transition mr-auto"
+          className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hover:opacity-90 transition"
         >
           HMS+
         </Link>
 
         {/* DESKTOP MENU (Main Links) */}
-        <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-          {/* NAV LINKS */}
-          <div className="flex items-center gap-6">
-            {navLinks.map((link) => {
-              const active = location.pathname === link.path;
+        <div className="hidden md:flex items-center justify-center gap-8 flex-1">
+          {navLinks.map((link) => {
+            const active = location.pathname === link.path;
 
-              return (
-                <Link key={link.name} to={link.path} className="relative group py-1 flex flex-col items-center">
-                  <span
-                    className={`text-sm font-medium transition-colors ${active
-                        ? "text-blue-600"
-                        : "text-gray-600 hover:text-blue-600"
-                      }`}
-                  >
-                    {link.name}
-                  </span>
+            return (
+              <Link key={link.name} to={link.path} className="relative group py-1 flex flex-col items-center">
+                <span
+                  className={`text-sm font-medium transition-colors ${active ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+                >
+                  {link.name}
+                </span>
 
-                  <span 
-                    className={`absolute bottom-0 h-[2px] bg-blue-600 rounded-full transition-all duration-300 ${
-                      active ? "w-full left-0" : "w-0 left-1/2 -translate-x-1/2 group-hover:w-full group-hover:left-0 group-hover:translate-x-0"
-                    }`} 
-                  />
-                </Link>
-              );
-            })}
-          </div>
+                <span
+                  className={`absolute bottom-0 h-[2px] bg-blue-600 rounded-full transition-all duration-300 ${active ? "w-full left-0" : "w-0 left-1/2 -translate-x-1/2 group-hover:w-full group-hover:left-0 group-hover:translate-x-0"}`}
+                />
+              </Link>
+            );
+          })}
         </div>
 
         {/* RIGHT SIDE TOOLS (Profile & Global Actions) */}

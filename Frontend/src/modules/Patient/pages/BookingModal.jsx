@@ -9,18 +9,28 @@ export default function BookingModal({ hospital, onClose }) {
   const [doctor, setDoctor] = useState("");
   const [date, setDate] = useState("");
   const [slot, setSlot] = useState("");
+  const storedUser = JSON.parse(localStorage.getItem("user") || "null");
 
   const handleBooking = () => {
+    if (!storedUser || storedUser.role !== "patient") {
+      toast.error("Please login as a patient to book an appointment.");
+      return;
+    }
+
     if (!doctor || !date || !slot) {
       toast.error("Please fill all fields to proceed");
       return;
     }
 
     const existing = JSON.parse(localStorage.getItem("appointments")) || [];
+    const patientEmail = storedUser.email || "";
+    const patientName = storedUser.name || "";
 
-    // 🚫 Prevent double booking
+    // 🚫 Prevent double booking for the same patient
     const alreadyBooked = existing.find(
       (a) =>
+        a.hospitalId === hospital.id &&
+        (a.patientEmail === patientEmail || a.patientName === patientName) &&
         a.doctor === doctor &&
         a.date === date &&
         a.slot === slot
@@ -33,12 +43,15 @@ export default function BookingModal({ hospital, onClose }) {
 
     const newBooking = {
       id: Date.now().toString(),
+      hospitalId: hospital.id,
       hospital: hospital.name,
       doctor,
       date,
       slot,
       status: "Confirmed",
-      bookedAt: new Date().toISOString()
+      bookedAt: new Date().toISOString(),
+      patientEmail,
+      patientName,
     };
 
     localStorage.setItem(
@@ -51,7 +64,7 @@ export default function BookingModal({ hospital, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-center items-center p-4">
+    <div className="fixed inset-0 z-100 flex justify-center items-center p-4">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

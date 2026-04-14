@@ -1,14 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, CalendarX2, CalendarDays, Stethoscope, MapPin, Building2, ChevronRight, Activity, X } from "lucide-react";
 
 export default function Appointments() {
   const [appointments, setAppointments] = useState([]);
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("appointments") || "[]");
     setAppointments(saved);
   }, []);
+
+  const filteredAppointments = useMemo(() => {
+    if (!currentUser) return [];
+
+    if (currentUser.role === "patient") {
+      return appointments.filter((app) =>
+        (currentUser.email && app.patientEmail === currentUser.email) ||
+        (currentUser.name && app.patientName === currentUser.name)
+      );
+    }
+
+    if (currentUser.role === "hospital") {
+      return appointments.filter((app) =>
+        (app.hospitalId && currentUser.id && app.hospitalId === currentUser.id) ||
+        app.hospital === currentUser.name
+      );
+    }
+
+    return [];
+  }, [appointments, currentUser]);
 
   const cancelAppointment = (id) => {
     // In a real app, you would ask for confirmation via a modal
@@ -17,10 +38,12 @@ export default function Appointments() {
     localStorage.setItem("appointments", JSON.stringify(updated));
   };
 
-  const upcomingCount = appointments.filter(a => new Date(a.date) >= new Date(new Date().toISOString().split("T")[0])).length;
+  const upcomingCount = filteredAppointments.filter(
+    (a) => new Date(a.date) >= new Date(new Date().toISOString().split("T")[0])
+  ).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col pt-[80px]">
+    <div className="min-h-screen bg-slate-50 flex flex-col pt-20">
 
       {/* DASHBOARD-STYLE HEADER */}
       <div className="bg-white border-b border-slate-200">
@@ -56,8 +79,8 @@ export default function Appointments() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1 pb-20">
         <div className="space-y-4">
           <AnimatePresence mode="popLayout">
-            {appointments.length > 0 ? (
-              appointments.map((app, index) => (
+            {filteredAppointments.length > 0 ? (
+              filteredAppointments.map((app, index) => (
                 <motion.div
                   key={app.id || index}
                   layout
@@ -122,7 +145,13 @@ export default function Appointments() {
                   <CalendarX2 className="w-6 h-6 text-slate-400" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900">No Appointments Scheduled</h3>
-                <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">You haven't booked any consultations yet. Go to the Network Directory to find a provider.</p>
+                <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">
+                  {currentUser ? (
+                    "You haven't booked any consultations yet. Go to the Network Directory to find a provider."
+                  ) : (
+                    "Please login with your patient account to view appointments."
+                  )}
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
