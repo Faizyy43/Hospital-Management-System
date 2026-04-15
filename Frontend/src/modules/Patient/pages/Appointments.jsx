@@ -43,7 +43,7 @@ export default function Appointments() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col pt-20">
+    <div className="min-h-full bg-slate-50 flex flex-col pt-20">
 
       {/* DASHBOARD-STYLE HEADER */}
       <div className="bg-white border-b border-slate-200">

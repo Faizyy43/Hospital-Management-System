@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { HeartOff, MapPin, Stethoscope, Building2, CalendarPlus, Heart } from "lucide-react";
 import BookingModal from "./BookingModal";
@@ -8,12 +8,13 @@ export default function Favourites() {
   const [favorites, setFavorites] = useState([]);
   const [selectedHospital, setSelectedHospital] = useState(null);
   const navigate = useNavigate();
-  const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-  const canBook = storedUser?.role === "patient";
+  const location = useLocation();
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
+  const canBook = currentUser?.role === "patient";
 
   const handleRequestSlot = (hospital) => {
-    if (!storedUser) {
-      navigate("/login");
+    if (!currentUser) {
+      navigate("/login", { state: { from: location } });
       return;
     }
     if (!canBook) {
@@ -23,6 +24,11 @@ export default function Favourites() {
   };
 
   useEffect(() => {
+    if (!currentUser) {
+      setFavorites([]);
+      return;
+    }
+
     const saved = JSON.parse(localStorage.getItem("favourites") || "[]");
     setFavorites(saved);
   }, []);
@@ -34,7 +40,7 @@ export default function Favourites() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 relative flex flex-col pt-20">
+    <div className="min-h-full bg-slate-50 relative flex flex-col pt-20">
       
       {/* DASHBOARD-STYLE HEADER */}
       <div className="bg-white border-b border-slate-200">
@@ -110,7 +116,7 @@ export default function Favourites() {
                           </div>
                        </div>
 
-                       {storedUser && !canBook ? (
+                       {currentUser && !canBook ? (
                          <button
                            disabled
                            className="flex items-center justify-center gap-2 bg-slate-100 text-slate-500 px-5 py-2.5 rounded-md font-semibold text-sm border border-slate-200 w-full sm:w-auto shrink-0"
@@ -141,7 +147,13 @@ export default function Favourites() {
                    <Heart className="w-6 h-6 text-slate-400" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900">No Facilities Saved</h3>
-                <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">Click the heart icon on any hospital in the Network Directory to easily find it here later.</p>
+                <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">
+                  {currentUser ? (
+                    "Click the heart icon on any hospital in the Network Directory to easily find it here later."
+                  ) : (
+                    "Please login with your patient account to access saved facilities."
+                  )}
+                </p>
               </motion.div>
             )}
           </AnimatePresence>

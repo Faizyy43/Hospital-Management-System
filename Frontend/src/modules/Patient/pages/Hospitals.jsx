@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Stethoscope, Search, Building2, CalendarPlus, Heart, SlidersHorizontal, Map, ChevronDown } from "lucide-react";
 import BookingModal from "./BookingModal";
@@ -38,12 +38,13 @@ export default function Hospitals() {
   const [cityFilter, setCityFilter] = useState("");
   const [selectedHospital, setSelectedHospital] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const storedUser = JSON.parse(localStorage.getItem("user") || "null");
   const canBook = storedUser?.role === "patient";
 
   const handleRequestSlot = (hospital) => {
     if (!storedUser) {
-      navigate("/login");
+      navigate("/login", { state: { from: location } });
       return;
     }
     if (!canBook) {
@@ -76,6 +77,11 @@ export default function Hospitals() {
   }, []);
 
   const toggleFavorite = (hospital) => {
+    if (!storedUser) {
+      navigate("/login", { state: { from: location } });
+      return;
+    }
+
     let updated;
     if (favorites.some((f) => f.id === hospital.id)) {
       updated = favorites.filter((f) => f.id !== hospital.id);
@@ -87,7 +93,7 @@ export default function Hospitals() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 relative flex flex-col pt-20">
+    <div className="min-h-full bg-slate-50 relative flex flex-col pt-20">
 
       {/* DASHBOARD-STYLE HEADER */}
       <div className="bg-white border-b border-slate-200">

@@ -76,12 +76,12 @@ export default function RegisterForm() {
     <div className="min-h-screen bg-gradient-to-br from-white via-sky-50 to-white flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-white rounded-2xl border border-sky-200 shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-sky-500 to-sky-600 px-6 sm:px-8 py-6">
+        <div className={`${role === "patient" ? "bg-gradient-to-r from-emerald-600 to-emerald-600" : "bg-gradient-to-r from-sky-500 to-sky-600"} px-6 sm:px-8 py-6`}>
           <div className="flex items-center gap-3">
             {role === "patient" ? <User className="w-6 h-6 text-white" /> : <Building2 className="w-6 h-6 text-white" />}
             <div>
               <h1 className="text-2xl font-bold text-white">{role === "patient" ? "Patient Registration" : "Hospital Registration"}</h1>
-              <p className="text-sm text-sky-100">Complete your profile securely</p>
+              <p className={`text-sm ${role === "patient" ? "text-emerald-100" : "text-sky-100"}`}>Complete your profile securely</p>
             </div>
           </div>
         </div>
@@ -184,7 +184,11 @@ export default function RegisterForm() {
               {/* Submit Button */}
               <button
                 onClick={handleSubmit}
-                className="w-full bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-95"
+                className={`w-full text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-95 ${
+                  role === "patient"
+                    ? "bg-gradient-to-r from-emerald-600 to-emerald-600 hover:from-emerald-700 hover:to-emerald-700"
+                    : "bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700"
+                }`}
               >
                 Complete Registration
                 <ArrowRight className="w-5 h-5" />
