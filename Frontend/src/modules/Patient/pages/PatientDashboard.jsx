@@ -297,6 +297,28 @@ export default function PatientDashboard() {
                         </div>
 
                         <div className="space-y-3">
+                          {/* NEW REPORT NOTIFICATION */}
+                          <div className="p-4 bg-white border border-slate-200 rounded-lg flex items-center justify-between gap-4 transition-all" id="noti-report">
+                            <div className="flex items-start gap-4">
+                              <div className="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center shrink-0 mt-0.5 border border-green-100">
+                                <FileText className="w-4 h-4" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold text-slate-900">Report sent from hospital</p>
+                                <p className="text-sm text-slate-600 mt-0.5">City General Hospital has securely shared your diagnostic test results.</p>
+                                <p className="text-xs font-medium text-slate-400 mt-2">Just now</p>
+                              </div>
+                            </div>
+                            <div className="flex flex-col justify-center gap-3 shrink-0 border-l border-slate-100 pl-4 ml-2">
+                               <button className="text-[11px] uppercase tracking-wider font-bold text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5">
+                                 <Download className="w-3.5 h-3.5" /> Download
+                               </button>
+                               <button onClick={(e) => e.currentTarget.closest('#noti-report').style.display='none'} className="text-[11px] uppercase tracking-wider font-bold text-red-500 hover:text-red-700 transition-colors flex items-center gap-1.5">
+                                 <X className="w-3.5 h-3.5" /> Remove
+                               </button>
+                            </div>
+                          </div>
+
                           <div className="p-4 bg-white border border-slate-200 rounded-lg flex items-start gap-4">
                             <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5 border border-blue-100">
                               <Calendar className="w-4 h-4" />

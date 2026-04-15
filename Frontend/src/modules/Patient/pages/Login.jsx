@@ -16,6 +16,7 @@ export default function Login() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [lastTriedEmail, setLastTriedEmail] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,6 +46,7 @@ export default function Login() {
     const user = fakeUsers.find((u) => u.email === email);
 
     if (!user) {
+      setShowForgotPassword(true);
       if (!lastTriedEmail) {
         // ✅ FIRST TIME
         setLastTriedEmail(email);
@@ -278,10 +280,34 @@ export default function Login() {
                         onChange={(e) => {
                           setEmail(e.target.value);
                           setShowAlert(false);
+                          setShowForgotPassword(false);
                         }}
                         onKeyDown={(e) => e.key === 'Enter' && sendOtp()}
                       />
                     </div>
+                    {showForgotPassword && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: -5 }} 
+                        animate={{ opacity: 1, y: 0 }} 
+                        className="flex justify-end mt-2"
+                      >
+                        <button 
+                          type="button" 
+                          onClick={() => {
+                            if (!email) {
+                              setAlertMsg("Enter your email to receive recovery instructions.");
+                              setShowAlert(true);
+                            } else {
+                              setAlertMsg("Account recovery instructions dispatched.");
+                              setShowAlert(true);
+                            }
+                          }}
+                          className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors"
+                        >
+                          Forgot password?
+                        </button>
+                      </motion.div>
+                    )}
                   </div>
 
                   <button 

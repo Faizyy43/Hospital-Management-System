@@ -86,14 +86,6 @@ export default function Navbar() {
 
         {/* RIGHT SIDE TOOLS (Profile & Global Actions) */}
         <div className="flex items-center gap-3 sm:gap-4">
-          {/* NOTIFICATIONS (Optional on mobile, keeping it visible) */}
-          {user && (
-            <button className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-100 hidden sm:block">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
-            </button>
-          )}
-
           {/* PROFILE AVATAR (Visible on all devices) */}
           <div className="relative z-[60]" ref={profileRef}>
             <button
@@ -147,22 +139,6 @@ export default function Navbar() {
                         >
                           <LayoutDashboard className="w-4 h-4" />
                           Dashboard
-                        </Link>
-
-                        <Link
-                          to="/profile"
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                        >
-                          <User className="w-4 h-4" />
-                          My Profile
-                        </Link>
-
-                        <Link
-                          to="/settings"
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                        >
-                          <Settings className="w-4 h-4" />
-                          Settings
                         </Link>
                       </div>
 
