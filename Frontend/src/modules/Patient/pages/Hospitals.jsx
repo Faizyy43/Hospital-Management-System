@@ -199,17 +199,19 @@ export default function Hospitals() {
                           </p>
                         </div>
                       </div>
-                      <button
-                        onClick={() => toggleFavorite(h)}
-                        className={`p-2 rounded-md border transition-colors shrink-0 ${
-                          isFav
-                            ? "bg-red-50 border-red-200 text-red-500 hover:bg-red-100"
-                            : "bg-white border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50"
-                        }`}
-                        title={isFav ? "Remove from Saved" : "Save Facility"}
-                      >
-                        <Heart className="w-4 h-4" fill={isFav ? "currentColor" : "none"} />
-                      </button>
+                      {canBook && (
+                        <button
+                          onClick={() => toggleFavorite(h)}
+                          className={`p-2 rounded-md border transition-colors shrink-0 ${
+                            isFav
+                              ? "bg-red-50 border-red-200 text-red-500 hover:bg-red-100"
+                              : "bg-white border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                          }`}
+                          title={isFav ? "Remove from Saved" : "Save Facility"}
+                        >
+                          <Heart className="w-4 h-4" fill={isFav ? "currentColor" : "none"} />
+                        </button>
+                      )}
                     </div>
 
                     <div className="mt-5 pt-5 border-t border-slate-100">
