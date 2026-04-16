@@ -9,6 +9,6 @@ export const fakeUsers = [
     email: "hospital@gmail.com",
     password: "123456",
     role: "hospital",
-    name: "City Hospital",
+    name: "Hospital",
   },
 ];

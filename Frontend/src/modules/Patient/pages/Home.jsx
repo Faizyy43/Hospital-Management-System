@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { CalendarCheck, ArrowRight, Building, Lock } from "lucide-react";
 import Hero from "../components/Hero";
+import Footer from "../components/Footer";
 
 export default function Home() {
   return (
@@ -20,19 +21,19 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <FeatureCard 
+            <FeatureCard
               icon={<Building className="w-5 h-5 text-blue-600" />}
               bg="bg-blue-50 border-blue-100"
               title="Verified Network"
               desc="Access a vast directory of certified, premium healthcare facilities equipped with modern clinical technology."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<CalendarCheck className="w-5 h-5 text-indigo-600" />}
               bg="bg-indigo-50 border-indigo-100"
               title="Instant Scheduling"
               desc="Bypass the waiting rooms. Request, reschedule, or manage your outpatient appointments digitally."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<Lock className="w-5 h-5 text-emerald-600" />}
               bg="bg-emerald-50 border-emerald-100"
               title="Secure Records"
@@ -46,26 +47,26 @@ export default function Home() {
       <section className="py-20 mt-auto">
         <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-2xl shadow-xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row items-center justify-between p-8 md:p-12">
-            
+
             {/* Minimalist Graphic Element */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none"></div>
-            
+
             <div className="relative z-10 max-w-xl text-center md:text-left mb-8 md:mb-0">
               <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight mb-3">Ready to digitize your healthcare?</h2>
               <p className="text-slate-400 text-sm md:text-base leading-relaxed">
                 Join thousands of patients and leading providers leveraging our smart clinical infrastructure today. Registration is secure and instantly accessible.
               </p>
             </div>
-            
+
             <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0">
-              <Link 
-                to="/hospitals" 
+              <Link
+                to="/hospitals"
                 className="w-full sm:w-auto bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700 px-6 py-3 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center text-center shadow-sm"
               >
                 Browse Network
               </Link>
-              <Link 
-                to="/register" 
+              <Link
+                to="/register"
                 className="w-full sm:w-auto bg-blue-600 border border-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 text-center shadow-sm"
               >
                 Create Account
@@ -76,15 +77,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Simple Footer */}
-      <footer className="bg-white border-t border-slate-200 py-8">
-         <div className="max-w-7xl mx-auto px-4 text-center flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2 text-slate-800 font-bold text-lg">
-              <Building className="w-5 h-5 text-blue-600" /> HMS+
-            </div>
-            <p className="text-slate-400 font-medium text-[11px] uppercase tracking-widest">© {new Date().getFullYear()} HMS+ Healthcare Platform. All rights reserved.</p>
-         </div>
-      </footer>
+      {/* <Footer /> */}
     </div>
   );
 }

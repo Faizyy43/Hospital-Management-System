@@ -110,14 +110,14 @@ export default function Hospitals() {
               </p>
             </div>
             <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 bg-slate-50 px-4 py-2 border border-slate-200 rounded-md">
-               <SlidersHorizontal className="w-4 h-4 text-slate-400" />
-               {filtered.length} Results Found
+              <SlidersHorizontal className="w-4 h-4 text-slate-400" />
+              {filtered.length} Results Found
             </div>
           </div>
-          
+
           {/* FILTER BAR */}
           <div className="mt-8 grid sm:grid-cols-3 gap-4">
-            
+
             {/* Search */}
             <div className="relative flex items-center">
               <Search className="w-4 h-4 absolute left-3.5 text-slate-400 pointer-events-none" />
@@ -171,9 +171,9 @@ export default function Hospitals() {
           <AnimatePresence mode="popLayout">
             {filtered.length > 0 ? (
               filtered.map((h, index) => {
-                 const isFav = favorites.some((f) => f.id === h.id);
-                 
-                 return (
+                const isFav = storedUser ? favorites.some((f) => f.id === h.id) : false;
+
+                return (
                   <motion.div
                     layout
                     key={h.id}
@@ -199,14 +199,13 @@ export default function Hospitals() {
                           </p>
                         </div>
                       </div>
-                      {canBook && (
+                      {(!storedUser || canBook) && (
                         <button
                           onClick={() => toggleFavorite(h)}
-                          className={`p-2 rounded-md border transition-colors shrink-0 ${
-                            isFav
+                          className={`p-2 rounded-md border transition-colors shrink-0 ${isFav
                               ? "bg-red-50 border-red-200 text-red-500 hover:bg-red-100"
                               : "bg-white border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50"
-                          }`}
+                            }`}
                           title={isFav ? "Remove from Saved" : "Save Facility"}
                         >
                           <Heart className="w-4 h-4" fill={isFav ? "currentColor" : "none"} />
@@ -216,36 +215,36 @@ export default function Hospitals() {
 
                     <div className="mt-5 pt-5 border-t border-slate-100">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                         
-                         <div>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">Available Consultants</span>
-                            <div className="flex items-center gap-2">
-                               <Stethoscope className="w-4 h-4 text-blue-600" />
-                               <span className="text-sm font-semibold text-slate-700">{h.doctors.join(", ")}</span>
-                            </div>
-                         </div>
 
-                         {storedUser && !canBook ? (
-                           <button
-                             disabled
-                             className="flex items-center justify-center gap-2 bg-slate-100 text-slate-500 px-5 py-2.5 rounded-md font-semibold text-sm border border-slate-200 w-full sm:w-auto shrink-0"
-                           >
-                             Patient Only
-                           </button>
-                         ) : (
-                           <button
-                             onClick={() => handleRequestSlot(h)}
-                             className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md font-semibold text-sm transition-colors border border-blue-700 w-full sm:w-auto shrink-0 shadow-sm"
-                           >
-                             <CalendarPlus className="w-4 h-4" />
-                             Request Slot
-                           </button>
-                         )}
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">Available Consultants</span>
+                          <div className="flex items-center gap-2">
+                            <Stethoscope className="w-4 h-4 text-blue-600" />
+                            <span className="text-sm font-semibold text-slate-700">{h.doctors.join(", ")}</span>
+                          </div>
+                        </div>
+
+                        {storedUser && !canBook ? (
+                          <button
+                            disabled
+                            className="flex items-center justify-center gap-2 bg-slate-100 text-slate-500 px-5 py-2.5 rounded-md font-semibold text-sm border border-slate-200 w-full sm:w-auto shrink-0"
+                          >
+                            Patient Only
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleRequestSlot(h)}
+                            className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md font-semibold text-sm transition-colors border border-blue-700 w-full sm:w-auto shrink-0 shadow-sm"
+                          >
+                            <CalendarPlus className="w-4 h-4" />
+                            Request Slot
+                          </button>
+                        )}
 
                       </div>
                     </div>
                   </motion.div>
-                 );
+                );
               })
             ) : (
               <motion.div

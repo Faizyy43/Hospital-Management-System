@@ -41,28 +41,28 @@ export default function Favourites() {
 
   return (
     <div className="min-h-full bg-slate-50 relative flex flex-col pt-20">
-      
+
       {/* DASHBOARD-STYLE HEADER */}
       <div className="bg-white border-b border-slate-200">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-red-500 mb-2">
-                  <Heart className="w-3.5 h-3.5" />
-                  Saved
-                </div>
-                <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Saved Facilities</h1>
-                <p className="mt-2 text-sm text-slate-500 max-w-2xl">
-                  Your curated directory of preferred hospitals and clinics for quick scheduling.
-                </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-red-500 mb-2">
+                <Heart className="w-3.5 h-3.5" />
+                Saved
               </div>
-              
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 bg-slate-50 px-4 py-2 border border-slate-200 rounded-md shadow-sm">
-                 <Building2 className="w-4 h-4 text-slate-400" />
-                 {favorites.length} Saved
-              </div>
+              <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Saved Facilities</h1>
+              <p className="mt-2 text-sm text-slate-500 max-w-2xl">
+                Your curated directory of preferred hospitals and clinics for quick scheduling.
+              </p>
             </div>
-         </div>
+
+            <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 bg-slate-50 px-4 py-2 border border-slate-200 rounded-md shadow-sm">
+              <Building2 className="w-4 h-4 text-slate-400" />
+              {favorites.length} Saved
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* CONTENT AREA */}
@@ -107,31 +107,31 @@ export default function Favourites() {
 
                   <div className="mt-5 pt-5 border-t border-slate-100">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                       
-                       <div>
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">Available Consultants</span>
-                          <div className="flex items-center gap-2">
-                             <Stethoscope className="w-4 h-4 text-blue-600" />
-                             <span className="text-sm font-semibold text-slate-700">{h.doctors ? h.doctors.join(", ") : "No doctors listed"}</span>
-                          </div>
-                       </div>
 
-                       {currentUser && !canBook ? (
-                         <button
-                           disabled
-                           className="flex items-center justify-center gap-2 bg-slate-100 text-slate-500 px-5 py-2.5 rounded-md font-semibold text-sm border border-slate-200 w-full sm:w-auto shrink-0"
-                         >
-                           Patient Only
-                         </button>
-                       ) : (
-                         <button
-                           onClick={() => handleRequestSlot(h)}
-                           className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md font-semibold text-sm transition-colors border border-blue-700 w-full sm:w-auto shrink-0 shadow-sm"
-                         >
-                           <CalendarPlus className="w-4 h-4" />
-                           Request Slot
-                         </button>
-                       )}
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">Available Consultants</span>
+                        <div className="flex items-center gap-2">
+                          <Stethoscope className="w-4 h-4 text-blue-600" />
+                          <span className="text-sm font-semibold text-slate-700">{h.doctors ? h.doctors.join(", ") : "No doctors listed"}</span>
+                        </div>
+                      </div>
+
+                      {currentUser && !canBook ? (
+                        <button
+                          disabled
+                          className="flex items-center justify-center gap-2 bg-slate-100 text-slate-500 px-5 py-2.5 rounded-md font-semibold text-sm border border-slate-200 w-full sm:w-auto shrink-0"
+                        >
+                          Patient Only
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleRequestSlot(h)}
+                          className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md font-semibold text-sm transition-colors border border-blue-700 w-full sm:w-auto shrink-0 shadow-sm"
+                        >
+                          <CalendarPlus className="w-4 h-4" />
+                          Request Slot
+                        </button>
+                      )}
 
                     </div>
                   </div>
@@ -144,7 +144,7 @@ export default function Favourites() {
                 className="col-span-full py-20 text-center bg-white border border-slate-200 border-dashed rounded-xl"
               >
                 <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100">
-                   <Heart className="w-6 h-6 text-slate-400" />
+                  <Heart className="w-6 h-6 text-slate-400" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900">No Facilities Saved</h3>
                 <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">

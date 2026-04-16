@@ -47,7 +47,7 @@ export default function Appointments() {
 
       {/* DASHBOARD-STYLE HEADER */}
       <div className="bg-white border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-blue-600 mb-2">
@@ -59,15 +59,15 @@ export default function Appointments() {
                 Review and manage your scheduled outpatient visits and tele-consultations across our healthcare network.
               </p>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <div className="bg-slate-50 border border-slate-200 rounded-md px-4 py-2 flex items-center gap-3 shadow-sm">
                 <div className="w-8 h-8 rounded bg-blue-100 flex items-center justify-center">
-                   <Activity className="w-4 h-4 text-blue-700" />
+                  <Activity className="w-4 h-4 text-blue-700" />
                 </div>
                 <div>
-                   <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 leading-none mb-1">Upcoming</p>
-                   <p className="text-sm font-semibold text-slate-900 leading-none">{upcomingCount} Scheduled</p>
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 leading-none mb-1">Upcoming</p>
+                  <p className="text-sm font-semibold text-slate-900 leading-none">{upcomingCount} Scheduled</p>
                 </div>
               </div>
             </div>
@@ -99,28 +99,28 @@ export default function Appointments() {
 
                     {/* DETAILS */}
                     <div className="flex-1 min-w-0">
-                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-1">
-                         <h2 className="text-lg font-bold text-slate-900 leading-tight">{app.hospital}</h2>
-                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-green-50 text-green-700 border border-green-200 w-max shrink-0">
-                           <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                           {app.status || "Confirmed"}
-                         </span>
-                       </div>
-                       
-                       <p className="text-sm font-semibold text-blue-600 flex items-center gap-1.5">
-                         <Stethoscope className="w-4 h-4" /> Provider: {app.doctor}
-                       </p>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-1">
+                        <h2 className="text-lg font-bold text-slate-900 leading-tight">{app.hospital}</h2>
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-green-50 text-green-700 border border-green-200 w-max shrink-0">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                          {app.status || "Confirmed"}
+                        </span>
+                      </div>
 
-                       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-3 pt-3 border-t border-slate-100 w-full text-sm font-medium text-slate-600">
-                          <span className="flex items-center gap-1.5">
-                            <Clock className="w-4 h-4 text-slate-400" /> 
-                            {app.slot}
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <Calendar className="w-4 h-4 text-slate-400" /> 
-                            {new Date(app.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric' })}
-                          </span>
-                       </div>
+                      <p className="text-sm font-semibold text-blue-600 flex items-center gap-1.5">
+                        <Stethoscope className="w-4 h-4" /> Provider: {app.doctor}
+                      </p>
+
+                      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-3 pt-3 border-t border-slate-100 w-full text-sm font-medium text-slate-600">
+                        <span className="flex items-center gap-1.5">
+                          <Clock className="w-4 h-4 text-slate-400" />
+                          {app.slot}
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="w-4 h-4 text-slate-400" />
+                          {new Date(app.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric' })}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -141,7 +141,7 @@ export default function Appointments() {
                 animate={{ opacity: 1 }}
                 className="text-center py-24 bg-white border border-slate-200 border-dashed rounded-xl"
               >
-                 <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100">
+                <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100">
                   <CalendarX2 className="w-6 h-6 text-slate-400" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900">No Appointments Scheduled</h3>

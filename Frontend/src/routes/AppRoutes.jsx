@@ -20,6 +20,7 @@ import RegisterForm from "../modules/Patient/pages/RegisterForm";
 import Doctors from "../modules/hospitalAdmin/pages/Doctors";
 import Staff from "../modules/hospitalAdmin/pages/Staff";
 import OPD from "../modules/hospitalAdmin/pages/OPD";
+import Footer from "../modules/Patient/components/Footer";
 
 // 🔥 INLINE NAVBAR LAYOUT
 const NavbarLayout = () => {
@@ -75,6 +76,7 @@ const AppRoutes = () => {
         <Route path="staff" element={<Staff />} />
         <Route path="opd" element={<OPD />} />
       </Route>
+      
     </Routes>
   );
 };
