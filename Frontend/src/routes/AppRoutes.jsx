@@ -4,13 +4,14 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../modules/masterAdmin/auth/pages/Login";
 import Dashboard from "../modules/masterAdmin/dashboard/pages/Dashboard";
 import HospitalList from "../modules/masterAdmin/hospitals/pages/HospitalList";
-import ApprovalList from "../modules/masterAdmin/approvals/pages/ApprovalList";
 import Analytics from "../modules/masterAdmin/analytics/pages/Analytics";
 
 // Layout
 import AdminLayout from "../Layout/AdminLayout";
 import HospitalDetail from "../modules/masterAdmin/hospitals/components/HospitalDetail";
 import PatientDetail from "../modules/masterAdmin/hospitals/components/PatientDetail";
+import RequestList from "../modules/masterAdmin/approvals/pages/RequestList";
+import RequestDetails from "../modules/masterAdmin/approvals/components/RequestDetails";
 
 const AppRoutes = () => {
   return (
@@ -25,7 +26,8 @@ const AppRoutes = () => {
         <Route path="hospitals" element={<HospitalList />} />
         <Route path="hospitals/:id" element={<HospitalDetail />} />
         <Route path="patients/:id" element={<PatientDetail />} />
-        <Route path="approvals" element={<ApprovalList />} />
+        <Route path="requests" element={<RequestList />} />
+        <Route path="requests/:id" element={<RequestDetails/> }/>
         <Route path="analytics" element={<Analytics />} />
       </Route>
 

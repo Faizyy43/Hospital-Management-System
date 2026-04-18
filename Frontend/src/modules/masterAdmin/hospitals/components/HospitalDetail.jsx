@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getHospitalById } from "../hospitalService";
-import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const HospitalDetail = () => {
   const { id } = useParams();
@@ -11,10 +21,34 @@ const HospitalDetail = () => {
   const [tab, setTab] = useState("overview");
 
   useEffect(() => {
-    getHospitalById(id).then(setData);
-  }, [id]);
+  const load = async () => {
+    try {
+      console.log("Fetching hospital:", id);
 
-  if (!data) return <div>Loading...</div>;
+      const res = await getHospitalById(id);
+
+      console.log("API result:", res);
+
+      if (res) {
+        setData(res);
+      } else {
+        console.log("No data returned");
+        setData({});
+      }
+
+    } catch (err) {
+      console.error("API error:", err);
+      setData({});
+    }
+  };
+
+  load();
+}, [id]);
+
+ if (!data) return <div>Loading...</div>;
+
+if (Object.keys(data).length === 0)
+  return <div>No hospital data found</div>;
 
   const InfoItem = ({ label, value }) => (
     <div className="flex justify-between border-b py-1">
@@ -54,7 +88,7 @@ const HospitalDetail = () => {
           </p>
 
           <div className="flex gap-2 mt-2 flex-wrap">
-            {data.specialities.map((s, i) => (
+            {data.specialities?.map((s, i) => (
               <span
                 key={i}
                 className="bg-blue-100 text-blue-600 px-2 py-1 text-xs rounded"
@@ -133,18 +167,22 @@ const HospitalDetail = () => {
             {data.emergency ? "Available (24x7)" : "Not Available"}
           </Card>
 
-          <Card title="Accreditations">{data.accreditations.join(", ")}</Card>
+          <Card title="Accreditations">
+            {data.accreditations?.length
+              ? data.accreditations.join(", ")
+              : "N/A"}
+          </Card>
         </div>
       )}
 
       {/* PATIENTS */}
       {tab === "patients" && (
         <Section title="Patients">
-          {data.patients.map((p) => (
+          {data.patients?.map((p) => (
             <Row
               key={p.id}
-              text={`${p.name} - ${p.issue}`}
-              onClick={() => navigate(`/admin/patients/${p.id}`)}
+              text={`Name : ${p.name} || Issue : ${p.issue}`}
+              onClick={() => navigate(`/admin/hospitals/${data.id}/patients/${p.id}`)}
             />
           ))}
         </Section>

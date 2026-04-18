@@ -19,8 +19,8 @@ const Sidebar = () => {
           Hospitals
         </NavLink>
 
-        <NavLink to="/admin/approvals" className={linkClass}>
-          Approvals
+        <NavLink to="/admin/requests" className={linkClass}>
+          Requests
         </NavLink>
 
         <NavLink to="/admin/analytics" className={linkClass}>

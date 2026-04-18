@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getPatientById } from "../hospitalService";
 
 const PatientDetail = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     getPatientById(id).then(setData);
@@ -14,7 +15,11 @@ const PatientDetail = () => {
 
   return (
     <div className="space-y-6">
-
+      <button onClick={() => navigate(-1)}
+        className="mb-4 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+        >
+          ← Back
+      </button>
       {/* Basic Info */}
       <div className="bg-white p-4 rounded shadow">
         <h2 className="text-xl font-bold">{data.fullName}</h2>
