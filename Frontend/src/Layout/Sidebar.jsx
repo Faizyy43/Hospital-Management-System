@@ -1,36 +1,4 @@
-<<<<<<< HEAD
-import { NavLink } from "react-router-dom";
-
-const Sidebar = () => {
-  const linkClass = ({ isActive }) =>
-    `block p-2 rounded ${
-      isActive ? "bg-gray-700" : "hover:bg-gray-700"
-    }`;
-
-  return (
-    <div className="w-64 bg-gray-800 text-white p-4">
-      <h2 className="text-xl font-bold mb-6">Master Admin</h2>
-
-      <nav className="space-y-2">
-        <NavLink to="/admin/dashboard" className={linkClass}>
-          Dashboard
-        </NavLink>
-
-        <NavLink to="/admin/hospitals" className={linkClass}>
-          Hospitals
-        </NavLink>
-
-        <NavLink to="/admin/requests" className={linkClass}>
-          Requests
-        </NavLink>
-
-        <NavLink to="/admin/analytics" className={linkClass}>
-          Analytics
-        </NavLink>
-      </nav>
-    </div>
-=======
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -38,30 +6,84 @@ import {
   Stethoscope,
   Building,
   Activity,
-  Layers
+  Layers,
+  FileText,
+  PieChart
 } from "lucide-react";
-import SidebarItem from "../Layout/SidebarItem";
+import SidebarItem from "./SidebarItem";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+  const location = useLocation();
+  const isMasterAdmin = location.pathname.startsWith("/admin");
+
   const handleClick = () => {
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 768 && setIsOpen) {
       setIsOpen(false);
     }
   };
 
-  const navItem =
+  // Hospital Admin standard styling
+  const navItemClass =
     "relative flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-transparent";
+  const activeClass = "bg-blue-50 text-blue-700 border-blue-100/50 hover:bg-blue-50 hover:text-blue-700 font-semibold";
+  const indicatorClass = "hidden"; 
 
-  const active = "bg-blue-50 text-blue-700 border-blue-100/50 hover:bg-blue-50 hover:text-blue-700 font-semibold";
+  // Master Admin simple standard styling
+  const masterLinkClass = ({ isActive }) =>
+    `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors ${
+      isActive 
+        ? "bg-sky-50 text-sky-700 font-semibold border border-sky-100/50" 
+        : "text-slate-600 hover:bg-sky-50/50 hover:text-slate-900 border border-transparent font-medium"
+    }`;
 
-  const indicator = "hidden"; // We are using standard background highlighting for a cleaner look
+  // -------------------------
+  // MASTER ADMIN SIDEBAR
+  // -------------------------
+  if (isMasterAdmin) {
+    return (
+      <div className="w-[260px] bg-white border-r border-slate-200 h-screen flex flex-col shrink-0 transition-all z-50">
+        <div className="h-16 flex items-center px-6 border-b border-slate-100 shrink-0">
+           <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2.5 tracking-tight">
+             <div className="w-8 h-8 rounded-md bg-sky-500 flex items-center justify-center shrink-0 shadow-sm">
+               <Activity className="w-4 h-4 text-white" />
+             </div>
+             Master Admin
+           </h2>
+        </div>
+        <div className="flex-1 overflow-y-auto py-6 px-3 custom-scrollbar">
+          
+          <div className="px-3 mb-3 text-[10px] uppercase tracking-widest font-semibold text-sky-600/70">
+            Network Operations
+          </div>
 
+          <nav className="space-y-1.5 mb-8">
+            <NavLink to="/admin/dashboard" className={masterLinkClass}>
+              <LayoutDashboard className="w-[18px] h-[18px]"/> Dashboard
+            </NavLink>
+            <NavLink to="/admin/hospitals" className={masterLinkClass}>
+              <Building className="w-[18px] h-[18px]"/> Hospitals
+            </NavLink>
+            <NavLink to="/admin/requests" className={masterLinkClass}>
+              <FileText className="w-[18px] h-[18px]"/> Requests
+            </NavLink>
+            {/* <NavLink to="/admin/analytics" className={masterLinkClass}>
+              <PieChart className="w-[18px] h-[18px]"/> Analytics
+            </NavLink> */}
+          </nav>
+        </div>
+      </div>
+    );
+  }
+
+  // -------------------------
+  // HOSPITAL ADMIN SIDEBAR
+  // -------------------------
   return (
     <>
       {/* Overlay (Mobile) */}
       {isOpen && (
         <div
-          onClick={() => setIsOpen(false)}
+          onClick={() => setIsOpen && setIsOpen(false)}
           className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
         />
       )}
@@ -69,7 +91,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       {/* Sidebar */}
       <div
         className={`fixed md:relative top-0 left-0 z-50 h-screen w-[260px] 
-        bg-white border-r border-slate-200 flex flex-col shadow-xl md:shadow-none
+        bg-white border-r border-slate-200 flex flex-col shrink-0 shadow-xl md:shadow-none
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
@@ -99,9 +121,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               to="/hadmin"
               icon={LayoutDashboard}
               label="Dashboard"
-              navItem={navItem}
-              active={active}
-              indicator={indicator}
+              navItem={navItemClass}
+              active={activeClass}
+              indicator={indicatorClass}
               onClick={handleClick}
             />
           </nav>
@@ -116,9 +138,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               to="/hadmin/patients"
               icon={Users}
               label="Patients Directory"
-              navItem={navItem}
-              active={active}
-              indicator={indicator}
+              navItem={navItemClass}
+              active={activeClass}
+              indicator={indicatorClass}
               onClick={handleClick}
             />
 
@@ -126,9 +148,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               to="/hadmin/doctors"
               icon={Stethoscope}
               label="Medical Staff"
-              navItem={navItem}
-              active={active}
-              indicator={indicator}
+              navItem={navItemClass}
+              active={activeClass}
+              indicator={indicatorClass}
               onClick={handleClick}
             />
           </nav>
@@ -143,9 +165,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               to="/hadmin/staff"
               icon={Building}
               label="Staff Management"
-              navItem={navItem}
-              active={active}
-              indicator={indicator}
+              navItem={navItemClass}
+              active={activeClass}
+              indicator={indicatorClass}
               onClick={handleClick}
             />
 
@@ -153,16 +175,15 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               to="/hadmin/opd"
               icon={Layers}
               label="OPD Categories"
-              navItem={navItem}
-              active={active}
-              indicator={indicator}
+              navItem={navItemClass}
+              active={activeClass}
+              indicator={indicatorClass}
               onClick={handleClick}
             />
           </nav>
         </div>
       </div>
     </>
->>>>>>> df718462ab2fcb28ae5f3d166f47ceab63a22726
   );
 };
 
