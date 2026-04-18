@@ -134,7 +134,7 @@ export default function Navbar() {
                       </div>
                       <div className="p-2">
                         <Link
-                          to={user.role === "patient" ? "/dashboard" : "/hadmin"}
+                          to={user.role === "patient" ? "/dashboard" : "/hadmin" ? "Admin Account" : "/admin/dashboard/"}
                           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                         >
                           <LayoutDashboard className="w-4 h-4" />

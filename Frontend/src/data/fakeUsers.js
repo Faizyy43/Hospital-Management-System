@@ -11,4 +11,10 @@ export const fakeUsers = [
     role: "hospital",
     name: "Hospital",
   },
+  {
+    email: "admin@gmail.com",
+    password: "admin",
+    role: "admin",
+    name: "Master Admin System",
+  },
 ];
