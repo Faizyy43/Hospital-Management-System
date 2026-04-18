@@ -12,7 +12,7 @@ const Layout = () => {
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {/* Right Section */}
-      <div className="flex flex-col flex-1 relative">
+      <div className="flex flex-col flex-1 relative min-w-0">
         {/* Topbar */}
         <Topbar setIsOpen={setIsOpen} />
 

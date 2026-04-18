@@ -20,15 +20,15 @@ const HospitalList = () => {
   );
 
   return (
-    <div className="p-6 md:p-8 max-w-[1600px] mx-auto min-h-screen bg-slate-50/50">
+    <div className="w-full overflow-x-hidden p-4 sm:p-6 md:p-8 max-w-[1600px] mx-auto min-h-screen bg-slate-50/50">
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8"
       >
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Hospital Directory</h1>
-          <p className="text-slate-500 text-sm mt-1">Manage and monitor all registered medical facilities.</p>
+          <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">Hospital Directory</h1>
+          <p className="text-slate-500 text-xs md:text-sm mt-1">Manage and monitor all registered medical facilities.</p>
         </div>
       </motion.div>
 
@@ -37,10 +37,10 @@ const HospitalList = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+        className="w-full bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
       >
         {/* Search Bar Area */}
-        <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50">
+        <div className="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-slate-50/50">
           <div className="relative w-full sm:max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
@@ -51,22 +51,22 @@ const HospitalList = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <div className="text-sm font-medium text-slate-500 flex items-center gap-2">
+          <div className="text-[11px] sm:text-sm font-medium text-slate-500 flex items-center gap-2">
             <Building2 className="w-4 h-4" />
             {filtered.length} Facilities Found
           </div>
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
-              <tr className="bg-white border-b border-slate-100 text-[11px] uppercase tracking-wider text-slate-400">
-                <th className="px-6 py-4 font-semibold w-[40%]">Facility Profile</th>
-                <th className="px-6 py-4 font-semibold">Classification</th>
-                <th className="px-6 py-4 font-semibold text-center">Status</th>
-                <th className="px-6 py-4 font-semibold text-right">Registered Patients</th>
-                <th className="px-6 py-4 font-semibold"></th>
+              <tr className="bg-white border-b border-slate-100 text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400">
+                <th className="px-4 sm:px-6 py-3 sm:py-4 font-semibold w-[40%]">Facility Profile</th>
+                <th className="px-4 sm:px-6 py-3 sm:py-4 font-semibold">Classification</th>
+                <th className="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-center">Status</th>
+                <th className="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-right">Registered Patients</th>
+                <th className="px-4 sm:px-6 py-3 sm:py-4 font-semibold"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
@@ -79,41 +79,41 @@ const HospitalList = () => {
                   className="hover:bg-slate-50/80 transition-colors group cursor-pointer"
                   onClick={() => navigate(`/admin/hospitals/${h.id}`)}
                 >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center border border-sky-100/50 shrink-0 text-sky-600">
-                        <Activity className="w-5 h-5" />
+                  <td className="px-4 sm:px-6 py-3 sm:py-4">
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-sky-50 flex items-center justify-center border border-sky-100/50 shrink-0 text-sky-600">
+                        <Activity className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-sm text-slate-900 group-hover:text-blue-600 transition-colors">{h.name}</h3>
-                        <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
+                        <h3 className="font-semibold text-xs sm:text-sm text-slate-900 group-hover:text-blue-600 transition-colors">{h.name}</h3>
+                        <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-500 mt-0.5">
                           <MapPin className="w-3 h-3" /> {h.location}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200/60">
+                  <td className="px-4 sm:px-6 py-3 sm:py-4">
+                    <span className="text-[10px] sm:text-xs font-medium text-slate-600 bg-slate-100 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md border border-slate-200/60">
                       {h.type}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                  <td className="px-4 sm:px-6 py-3 sm:py-4 text-center">
+                    <span className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold border ${
                       h.status === "Active" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-amber-50 text-amber-700 border-amber-100"
                     }`}>
-                      {h.status === "Active" && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>}
+                      {h.status === "Active" && <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-emerald-500"></div>}
                       {h.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2 text-sm font-semibold text-slate-700">
-                      <Users className="w-4 h-4 text-slate-400" />
+                  <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
+                    <div className="flex items-center justify-end gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-slate-700">
+                      <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400" />
                       {h.patients.toLocaleString()}
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-right">
+                  <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
                     <button className="text-slate-400 group-hover:text-blue-600 transition-colors">
-                      <ChevronRight className="w-5 h-5" />
+                      <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
                   </td>
                 </motion.tr>

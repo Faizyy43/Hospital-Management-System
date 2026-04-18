@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Menu, Search, Bell, LogOut, User, Settings } from "lucide-react";
+import { Menu, Search, Bell, LogOut, User, Settings, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -54,7 +54,7 @@ const Topbar = ({ setIsOpen }) => {
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
-        className="sticky top-0 z-10 h-16 px-6 flex items-center justify-between bg-white border-b border-slate-200 shadow-sm"
+        className="sticky top-0 z-10 h-16 px-4 sm:px-6 flex items-center justify-between bg-white border-b border-slate-200 shadow-sm"
       >
         <div className="flex items-center gap-4">
           {/* Mobile Menu Toggle (if needed) */}
@@ -74,7 +74,7 @@ const Topbar = ({ setIsOpen }) => {
             <Search className="absolute left-3 w-4 h-4 text-slate-400" />
             <input
               placeholder="Search hospitals or patients..."
-              className="w-64 pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 focus:outline-none focus:bg-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all placeholder:text-slate-400"
+              className="w-48 lg:w-64 pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 focus:outline-none focus:bg-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all placeholder:text-slate-400"
             />
           </div>
 
@@ -120,8 +120,8 @@ const Topbar = ({ setIsOpen }) => {
                   <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
                     <User className="w-4 h-4 text-slate-400" /> My Profile
                   </button>
-                  <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-                    <Settings className="w-4 h-4 text-slate-400" /> Settings
+                  <button onClick={() => navigate('/')} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                    <Globe className="w-4 h-4 text-slate-400" /> Portal
                   </button>
                   <div className="h-px bg-slate-100 my-1"></div>
                   <button 
@@ -225,10 +225,11 @@ const Topbar = ({ setIsOpen }) => {
                   My Profile
                 </button>
                 <button 
+                  onClick={() => navigate('/')}
                   className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
                 >
-                  <Settings className="w-4 h-4 text-slate-400" />
-                  Account Settings
+                  <Globe className="w-4 h-4 text-slate-400" />
+                  Portal
                 </button>
                 
                 <div className="h-px bg-slate-100 my-1"></div>
