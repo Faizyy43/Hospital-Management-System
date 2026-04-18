@@ -7,13 +7,17 @@ const Layout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-<div className="flex h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-          <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-      
-      <div className="flex flex-col flex-1">
+    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      {/* Sidebar */}
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+
+      {/* Right Section */}
+      <div className="flex flex-col flex-1 relative">
+        {/* Topbar */}
         <Topbar setIsOpen={setIsOpen} />
 
-        <main className="p-5 overflow-y-auto">
+        {/* Page Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
           <Outlet />
         </main>
       </div>
