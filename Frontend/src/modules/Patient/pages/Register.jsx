@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaUserInjured, FaHospital } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { User, Building2, Shield, Heart, CheckCircle } from "lucide-react";
 
 export default function Register() {
   const [step, setStep] = useState(1);
@@ -16,125 +16,180 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {/* 🔥 BACKGROUND GLOW */}
-      <div className="absolute top-20 left-20 w-72 h-72 bg-blue-200 rounded-full blur-3xl opacity-30"></div>
-      <div className="absolute bottom-10 right-20 w-72 h-72 bg-indigo-200 rounded-full blur-3xl opacity-30"></div>
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 flex flex-col">
+      {/* Enhanced Background Glow */}
+      <div className="absolute top-[-15%] left-[-15%] w-[600px] h-[600px] bg-blue-200/30 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-[-15%] right-[-15%] w-[600px] h-[600px] bg-indigo-200/30 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-teal-100/20 rounded-full blur-[100px] pointer-events-none"></div>
 
-      {/* HERO */}
-      <div className="text-center pt-20 px-4 relative z-10">
-        <h1 className="text-4xl font-bold">
-          Welcome to <span className="text-blue-600">Healthcare Portal</span>
-        </h1>
-        <p className="text-gray-500 mt-2">
-          Smart platform for patients and hospitals
-        </p>
-      </div>
-
-      {/* CARDS */}
-      <div className="flex flex-col items-center justify-center mt-16 px-4 relative z-10">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 relative z-10 w-full">
+        {/* Compact Hero Section */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="grid md:grid-cols-2 gap-8 w-full max-w-3xl"
+          transition={{ duration: 0.6 }}
+          className="text-center w-full max-w-4xl mx-auto mb-12"
         >
-          {/* 🔥 PATIENT CARD */}
+          <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/50 shadow-sm">
+            <Shield className="w-4 h-4 mr-2 text-blue-600" />
+            <span className="text-xs font-semibold text-blue-700 tracking-wide uppercase">Secure Healthcare Network</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 leading-tight">
+            Join Our <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Healthcare Portal</span>
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Experience a cutting-edge platform designed for modern patients and world-class healthcare facilities.
+          </p>
+        </motion.div>
+
+        {/* Compact Cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="grid md:grid-cols-2 gap-8 w-full max-w-5xl mb-8"
+        >
+          {/* Patient Card */}
           <PremiumCard
-            color="orange"
-            icon={<FaUserInjured />}
-            title="Patient"
-            desc="Book appointments, track reports, and manage your health journey."
+            color="emerald"
+            icon={<User />}
+            title="Patient Portal"
+            desc="Book appointments, access medical records, track treatments, and manage your health journey with ease and privacy."
             btn="Create Patient Account"
+            badge="Instant Access"
+            features={["24/7 Appointment Booking", "Medical History Tracking", "Secure Messaging"]}
             onClick={() => handleSelectRole("patient")}
           />
 
-          {/* 🔥 HOSPITAL CARD */}
+          {/* Hospital Card */}
           <PremiumCard
             color="blue"
-            icon={<FaHospital />}
-            title="Hospital"
-            desc="Manage patients, appointments, and hospital operations efficiently."
-            btn="Apply as Hospital"
+            icon={<Building2 />}
+            title="Hospital Facility"
+            desc="Streamline patient management, doctor scheduling, appointment coordination, and operational efficiency."
+            btn="Register Hospital"
+            badge="Verified Access"
+            features={["Patient Management", "Staff Scheduling", "Analytics Dashboard"]}
             onClick={() => handleSelectRole("hospital")}
           />
         </motion.div>
 
-        {/* LOGIN */}
-        <p className="mt-10 text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-blue-600 font-medium hover:underline"
-          >
-            Login
-          </Link>
-        </p>
+        {/* Compact Login Link and Trust Indicators */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-center space-y-6"
+        >
+          <p className="text-sm text-gray-600 font-medium bg-white/70 backdrop-blur-md px-6 py-3 rounded-2xl border border-gray-200/50 shadow-lg inline-block">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition-colors duration-200"
+            >
+              Sign in here
+            </Link>
+          </p>
+
+          {/* Trust Indicators */}
+          <div className="flex items-center justify-center space-x-6 text-xs text-gray-500">
+            <div className="flex items-center">
+              <Heart className="w-4 h-4 mr-2 text-red-500" />
+              HIPAA Compliant
+            </div>
+            <div className="flex items-center">
+              <Shield className="w-4 h-4 mr-2 text-blue-500" />
+              End-to-End Encrypted
+            </div>
+            <div className="flex items-center">
+              <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+              99.9% Uptime
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
 }
 
-/* 🔥 PREMIUM CARD COMPONENT */
-function PremiumCard({ color, icon, title, desc, btn, onClick }) {
-  const isBlue = color === "blue";
+/* Enhanced Premium Card Component */
+function PremiumCard({ color, icon, title, desc, btn, badge, features, onClick }) {
+  const colorClasses = {
+    emerald: {
+      bg: "bg-emerald-50",
+      hoverBg: "group-hover:bg-emerald-600",
+      text: "text-emerald-700",
+      hoverText: "group-hover:text-white",
+      border: "border-emerald-200",
+      glow: "bg-emerald-400/20"
+    },
+    blue: {
+      bg: "bg-blue-50",
+      hoverBg: "group-hover:bg-blue-600",
+      text: "text-blue-700",
+      hoverText: "group-hover:text-white",
+      border: "border-blue-200",
+      glow: "bg-blue-400/20"
+    }
+  };
+
+  const classes = colorClasses[color] || colorClasses.blue;
 
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.96 }}
+      whileHover={{ y: -6, scale: 1.01 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="relative cursor-pointer group"
+      className="relative cursor-pointer group h-full flex"
     >
-      {/* 🔥 GRADIENT BORDER */}
-      <div
-        className={`absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r ${
-          isBlue
-            ? "from-blue-500 to-indigo-500"
-            : "from-orange-400 to-orange-600"
-        } opacity-60 group-hover:opacity-100 blur-[1px]`}
-      ></div>
+      {/* Enhanced Glow Effect */}
+      <div className={`absolute inset-0 rounded-[32px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl ${classes.glow}`}></div>
 
-      {/* GLASS CARD */}
-      <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/40">
-        {/* ICON */}
-        <div
-          className={`w-12 h-12 flex items-center justify-center rounded-xl mb-4 ${
-            isBlue
-              ? "bg-blue-100 text-blue-600"
-              : "bg-orange-100 text-orange-600"
-          }`}
-        >
-          {icon}
+      {/* Main Card */}
+      <div className="relative w-full h-full bg-white/80 backdrop-blur-sm rounded-[28px] p-6 lg:p-8 shadow-lg hover:shadow-2xl border border-gray-200/50 hover:border-gray-300/70 flex flex-col transition-all duration-300 overflow-hidden">
+        
+        {/* Top Section */}
+        <div className="flex items-start justify-between mb-4">
+          <div
+            className={`w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 [&>svg]:w-6 [&>svg]:h-6 ${classes.bg} ${classes.text} ${classes.hoverBg} ${classes.hoverText} shadow-sm`}
+          >
+            {icon}
+          </div>
+
+          {/* Badge */}
+          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${classes.bg} ${classes.text} shadow-sm`}>
+            {badge}
+          </span>
         </div>
 
-        {/* TEXT */}
-        <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="text-sm text-gray-500 mt-1">{desc}</p>
+        {/* Title and Description */}
+        <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
+        <p className="text-gray-600 leading-relaxed mb-4 flex-1 text-sm">{desc}</p>
 
-        {/* BADGE */}
-        <span className="inline-block mt-3 text-xs bg-gray-100 px-3 py-1 rounded-full">
-          {isBlue ? "Verified Access" : "Instant Access"}
-        </span>
+        {/* Features List */}
+        <ul className="mb-6 space-y-1">
+          {features.map((feature, index) => (
+            <li key={index} className="flex items-center text-xs text-gray-600">
+              <div className={`w-1.5 h-1.5 rounded-full mr-2 ${color === 'emerald' ? 'bg-emerald-500' : 'bg-blue-500'}`}></div>
+              {feature}
+            </li>
+          ))}
+        </ul>
 
-        {/* BUTTON */}
+        {/* Button */}
         <button
           onClick={(e) => {
-            e.stopPropagation(); // ✅ prevent double trigger
+            e.stopPropagation();
             onClick();
           }}
-          className={`mt-5 w-full py-2 rounded-lg text-white ${
-            isBlue
-              ? "bg-gradient-to-r from-blue-600 to-indigo-600"
-              : "bg-gradient-to-r from-orange-500 to-orange-600"
-          }`}
+          className={`w-full flex items-center justify-center py-3 px-4 mt-auto rounded-lg text-sm font-semibold transition-all duration-300 ${classes.bg} ${classes.text} ${classes.hoverBg} ${classes.hoverText} shadow-sm hover:shadow-md`}
         >
           {btn}
+          <svg className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
         </button>
-
-        {/* 🔥 RIPPLE EFFECT */}
-        <span className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
-          <span className="absolute w-0 h-0 bg-white/40 rounded-full group-active:w-96 group-active:h-96 transition-all duration-500"></span>
-        </span>
       </div>
     </motion.div>
   );

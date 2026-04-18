@@ -1,2 +1,25 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+
+@layer base {
+  html,
+  body,
+  #root {
+    overscroll-behavior-y: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  #root::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  body {
+    @apply overflow-x-hidden;
+  }
+}
