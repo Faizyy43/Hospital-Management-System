@@ -91,16 +91,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             />
 
             <SidebarItem
-              to="/hadmin/happointments"
-              icon={Calendar}
-              label="Appointments"
-              navItem={navItem}
-              active={active}
-              indicator={indicator}
-              onClick={handleClick}
-            />
-
-            <SidebarItem
               to="/hadmin/doctors"
               icon={Stethoscope}
               label="Medical Staff"

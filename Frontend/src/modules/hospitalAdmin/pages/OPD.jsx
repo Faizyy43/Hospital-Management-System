@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import PageHeader from "../../../Layout/PageHeader";
-import { Plus, MoreHorizontal } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 const defaultCategories = [
   "General Medicine", "Cardiology", "Orthopaedics", "Neurology",
@@ -17,9 +17,13 @@ const OPD = () => {
   const [input, setInput] = useState("");
 
   const addCategory = () => {
-    if (!input.trim()) return;
-    setCategories((prev) => [...prev, input]);
+    if (!input.trim() || categories.includes(input.trim())) return;
+    setCategories((prev) => [...prev, input.trim()]);
     setInput("");
+  };
+
+  const deleteCategory = (categoryToRemove) => {
+    setCategories((prev) => prev.filter((cat) => cat !== categoryToRemove));
   };
 
   return (
@@ -44,6 +48,7 @@ const OPD = () => {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && addCategory()}
           placeholder="Add new clinical category (e.g. Immunology)..."
           className="flex-1 bg-transparent px-2 py-1 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none"
         />
@@ -73,14 +78,18 @@ const OPD = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="group bg-white border border-slate-200 rounded-xl px-4 py-3.5 shadow-sm hover:border-blue-300 hover:shadow-md transition-all duration-200 cursor-pointer flex justify-between items-center"
+              className="group bg-white border border-slate-200 rounded-xl px-4 py-3.5 shadow-sm hover:border-red-100 hover:shadow-md transition-all duration-200 cursor-pointer flex justify-between items-center"
             >
               <span className="text-sm font-semibold text-slate-700 tracking-tight">
                 {cat}
               </span>
 
-              <button className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-md hover:bg-slate-50 shrink-0">
-                <MoreHorizontal className="w-4 h-4" />
+              <button 
+                onClick={() => deleteCategory(cat)}
+                className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-600 transition-colors p-1.5 rounded-md hover:bg-red-50 shrink-0"
+                title="Delete category"
+              >
+                <Trash2 className="w-4 h-4" />
               </button>
             </motion.div>
           ))}
