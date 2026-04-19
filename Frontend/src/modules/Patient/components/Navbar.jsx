@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, Menu, X, LogIn, LayoutDashboard, User, Settings, LogOut } from "lucide-react";
+import { Bell, Menu, X, LogIn, LayoutDashboard, User, Settings, LogOut, Upload } from "lucide-react";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [logo, setLogo] = useState(null);
   const profileRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,10 +18,26 @@ export default function Navbar() {
     try {
       const storedUser = JSON.parse(localStorage.getItem("user"));
       setUser(storedUser);
+      const storedLogo = localStorage.getItem("portalLogo");
+      setLogo(storedLogo);
     } catch (err) {
       setUser(null);
     }
   }, []);
+
+  // Handle logo upload
+  const handleLogoUpload = (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64 = e.target?.result;
+        localStorage.setItem("portalLogo", base64);
+        setLogo(base64);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Close profile dropdown when clicking outside
   useEffect(() => {
@@ -92,7 +110,13 @@ export default function Navbar() {
               onClick={() => { setProfileOpen(!profileOpen); setMenuOpen(false); }}
               className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 cursor-pointer shadow-sm hover:shadow transition-all focus:outline-none focus:ring-2 focus:ring-blue-100"
             >
-              {user ? (
+              {logo ? (
+                <img 
+                  src={logo} 
+                  alt="Logo" 
+                  className="w-full h-full rounded-full object-cover"
+                />
+              ) : user ? (
                 <span className="text-blue-700 font-semibold text-sm">
                   {user.name?.charAt(0).toUpperCase() || "U"}
                 </span>
@@ -100,6 +124,15 @@ export default function Navbar() {
                 <User className="w-5 h-5 text-blue-600" />
               )}
             </button>
+
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleLogoUpload}
+              className="hidden"
+            />
 
             {/* PROFILE DROPDOWN */}
             <AnimatePresence>
@@ -134,12 +167,19 @@ export default function Navbar() {
                       </div>
                       <div className="p-2">
                         <Link
-                          to={user.role === "patient" ? "/dashboard" : "/hadmin" ? "Admin Account" : "/admin/dashboard/"}
+                          to={user.role === "patient" ? "/patient-dashboard" : user.role === "admin" ? "/admin/dashboard" : "/hadmin"}
                           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                         >
                           <LayoutDashboard className="w-4 h-4" />
                           Dashboard
                         </Link>
+                        {/* <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors mt-1"
+                        >
+                          <Upload className="w-4 h-4" />
+                          {logo ? "Change Logo" : "Upload Logo"}
+                        </button> */}
                       </div>
 
                       <div className="p-2 border-t border-gray-50 bg-gray-50/50">

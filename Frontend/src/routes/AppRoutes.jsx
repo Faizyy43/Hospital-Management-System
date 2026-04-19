@@ -43,6 +43,7 @@ const NavbarLayout = () => {
       <div className="flex-1 w-full">
         <Outlet />
       </div>
+      <Footer />
     </>
   );
 };
