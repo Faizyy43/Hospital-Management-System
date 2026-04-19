@@ -41,8 +41,17 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   // -------------------------
   if (isMasterAdmin) {
     return (
-      <div className="w-[260px] bg-white border-r border-slate-200 h-screen flex flex-col shrink-0 transition-all z-50">
-        <div className="h-16 flex items-center px-6 border-b border-slate-100 shrink-0">
+      <>
+        {/* Overlay (Mobile) */}
+        {isOpen && (
+          <div
+            onClick={() => setIsOpen && setIsOpen(false)}
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
+          />
+        )}
+
+        <div className={`fixed md:relative top-0 left-0 z-50 h-screen w-[260px] bg-white border-r border-slate-200 flex flex-col shrink-0 shadow-xl md:shadow-none transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
+          <div className="h-16 flex items-center px-6 border-b border-slate-100 shrink-0">
            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2.5 tracking-tight">
              <div className="w-8 h-8 rounded-md bg-sky-500 flex items-center justify-center shrink-0 shadow-sm">
                <Activity className="w-4 h-4 text-white" />
@@ -57,13 +66,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           <nav className="space-y-1.5 mb-8">
-            <NavLink to="/admin/dashboard" className={masterLinkClass}>
+            <NavLink to="/admin/dashboard" onClick={handleClick} className={masterLinkClass}>
               <LayoutDashboard className="w-[18px] h-[18px]"/> Dashboard
             </NavLink>
-            <NavLink to="/admin/hospitals" className={masterLinkClass}>
+            <NavLink to="/admin/hospitals" onClick={handleClick} className={masterLinkClass}>
               <Building className="w-[18px] h-[18px]"/> Hospitals
             </NavLink>
-            <NavLink to="/admin/requests" className={masterLinkClass}>
+            <NavLink to="/admin/requests" onClick={handleClick} className={masterLinkClass}>
               <FileText className="w-[18px] h-[18px]"/> Requests
             </NavLink>
             {/* <NavLink to="/admin/analytics" className={masterLinkClass}>
@@ -71,7 +80,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </NavLink> */}
           </nav>
         </div>
-      </div>
+        </div>
+      </>
     );
   }
 

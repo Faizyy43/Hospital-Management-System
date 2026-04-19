@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Building2, Users, FileCheck, AlertCircle, Activity, ChevronRight, Clock, Star } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -25,45 +25,45 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-6 md:p-8 max-w-[1600px] mx-auto min-h-screen bg-white">
+    <div className="p-4 sm:p-6 md:p-8 max-w-[1600px] mx-auto min-h-screen bg-white">
       
       {/* Header */}
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-6 md:mb-8"
       >
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Master Platform Overview</h1>
-        <p className="text-slate-500 text-sm mt-1">Real-time metrics and network management</p>
+        <Link to={"/"} className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">Master Platform Overview</Link>
+        <p className="text-slate-500 text-xs md:text-sm mt-1">Real-time metrics and network management</p>
       </motion.div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-6 md:mb-8">
         {stats.map((stat, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`p-5 rounded-2xl border ${stat.border} bg-white shadow-sm hover:shadow-md transition-all group`}
+            className={`p-4 sm:p-5 rounded-2xl border ${stat.border} bg-white shadow-sm hover:shadow-md transition-all group`}
           >
             <div className="flex justify-between items-start">
-              <div className={`p-3 rounded-xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
-                <stat.icon className="w-6 h-6" />
+              <div className={`p-2.5 sm:p-3 rounded-xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
+                <stat.icon className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <span className="text-xs font-semibold text-slate-500 bg-slate-50 px-2 py-1 rounded-md border border-slate-100">
+              <span className="text-[10px] sm:text-xs font-semibold text-slate-500 bg-slate-50 px-2 py-1 rounded-md border border-slate-100">
                 {stat.trend}
               </span>
             </div>
-            <div className="mt-4">
-              <p className="text-3xl font-bold text-slate-900 tracking-tight">{stat.value}</p>
-              <p className="text-sm font-medium text-slate-500 mt-1">{stat.title}</p>
+            <div className="mt-3 sm:mt-4">
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">{stat.value}</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1">{stat.title}</p>
             </div>
           </motion.div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         
         {/* Network Hospitals Table */}
         <motion.div 
@@ -72,20 +72,20 @@ const Dashboard = () => {
           transition={{ delay: 0.3 }}
           className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col"
         >
-          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+          <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Hospital Network</h2>
-              <p className="text-xs text-slate-500 mt-0.5">Recently updated facilities</p>
+              <h2 className="text-sm sm:text-base font-bold text-slate-900">Hospital Network</h2>
+              <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5">Recently updated facilities</p>
             </div>
             <button 
               onClick={() => navigate('/admin/hospitals')} 
-              className="text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-lg transition-colors"
+              className="text-[10px] sm:text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-2.5 sm:px-3 py-1.5 rounded-lg transition-colors"
             >
               View Directory
             </button>
           </div>
           <div className="flex-1 overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse min-w-[500px]">
               <thead>
                 <tr className="bg-white border-b border-slate-100 text-[11px] uppercase tracking-wider text-slate-400">
                   <th className="p-4 font-semibold w-[45%]">Facility Name</th>
@@ -130,14 +130,14 @@ const Dashboard = () => {
           transition={{ delay: 0.4 }}
           className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col"
         >
-          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+          <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Pending Actions</h2>
-              <p className="text-xs text-slate-500 mt-0.5">Requires admin review</p>
+              <h2 className="text-sm sm:text-base font-bold text-slate-900">Pending Actions</h2>
+              <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5">Requires admin review</p>
             </div>
-            <button onClick={() => navigate('/admin/requests')} className="text-xs font-semibold text-blue-600 hover:text-blue-800">View All</button>
+            <button onClick={() => navigate('/admin/requests')} className="text-[10px] sm:text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-2.5 sm:px-3 py-1.5 rounded-lg transition-colors">View All</button>
           </div>
-          <div className="flex-1 p-5 space-y-4">
+          <div className="flex-1 p-4 sm:p-5 space-y-3 sm:space-y-4">
             {pendingApprovals.length === 0 ? (
                <div className="flex flex-col items-center justify-center h-full text-slate-400 py-6">
                  <FileCheck className="w-8 h-8 mb-2 opacity-50" />
@@ -145,9 +145,9 @@ const Dashboard = () => {
                </div>
             ) : (
               pendingApprovals.map((req) => (
-                <div key={req.id} className="p-4 border border-slate-100 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow">
+                <div key={req.id} className="p-3 sm:p-4 border border-slate-100 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-sm text-slate-800">{req.type}</h3>
+                    <h3 className="font-semibold text-xs sm:text-sm text-slate-800">{req.type}</h3>
                     <span className="flex items-center gap-1 text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
                       <Clock className="w-3 h-3" /> {req.time}
                     </span>

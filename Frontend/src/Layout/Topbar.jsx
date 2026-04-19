@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Menu, Search, Bell, LogOut, User, Settings } from "lucide-react";
+import { Menu, Search, Bell, LogOut, User, Settings, Globe, Upload, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -15,6 +15,34 @@ const Topbar = ({ setIsOpen }) => {
   // State for Hospital Admin dropdown
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef(null);
+
+  // Hospital logo upload state
+  const [logo, setLogo] = useState(() => {
+    try {
+      return localStorage.getItem("portalLogo") || null;
+    } catch {
+      return null;
+    }
+  });
+  const fileInputRef = useRef(null);
+
+  const handleLogoUpload = (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64 = e.target?.result;
+        localStorage.setItem("portalLogo", base64);
+        setLogo(base64);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeLogo = () => {
+    localStorage.removeItem("portalLogo");
+    setLogo(null);
+  };
 
   // Close master profile dropdown when clicking outside
   useEffect(() => {
@@ -42,7 +70,12 @@ const Topbar = ({ setIsOpen }) => {
     localStorage.removeItem("user");
     setProfileOpen(false);
     setOpen(false);
-    navigate("/login");
+    // Redirect to correct login page based on current location
+    if (isMasterAdmin) {
+      navigate("/admin/login");
+    } else {
+      navigate("/login");
+    }
   };
 
   // -------------------------
@@ -54,7 +87,7 @@ const Topbar = ({ setIsOpen }) => {
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
-        className="sticky top-0 z-10 h-16 px-6 flex items-center justify-between bg-white border-b border-slate-200 shadow-sm"
+        className="sticky top-0 z-10 h-16 px-4 sm:px-6 flex items-center justify-between bg-white border-b border-slate-200 shadow-sm"
       >
         <div className="flex items-center gap-4">
           {/* Mobile Menu Toggle (if needed) */}
@@ -64,7 +97,7 @@ const Topbar = ({ setIsOpen }) => {
           >
             <Menu className="w-5 h-5" />
           </button>
-          {/* <h1 className="hidden sm:block text-[15px] font-semibold text-slate-800 tracking-tight">Master Admin Panel</h1> */}
+
         </div>
 
         {/* RIGHT METRICS */}
@@ -74,7 +107,7 @@ const Topbar = ({ setIsOpen }) => {
             <Search className="absolute left-3 w-4 h-4 text-slate-400" />
             <input
               placeholder="Search hospitals or patients..."
-              className="w-64 pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 focus:outline-none focus:bg-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all placeholder:text-slate-400"
+              className="w-48 lg:w-64 pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 focus:outline-none focus:bg-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all placeholder:text-slate-400"
             />
           </div>
 
@@ -120,8 +153,8 @@ const Topbar = ({ setIsOpen }) => {
                   <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
                     <User className="w-4 h-4 text-slate-400" /> My Profile
                   </button>
-                  <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
-                    <Settings className="w-4 h-4 text-slate-400" /> Settings
+                  <button onClick={() => navigate('/')} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                    <Globe className="w-4 h-4 text-slate-400" /> Portal
                   </button>
                   <div className="h-px bg-slate-100 my-1"></div>
                   <button 
@@ -159,6 +192,14 @@ const Topbar = ({ setIsOpen }) => {
           <Menu className="w-5 h-5" />
         </button>
 
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleLogoUpload}
+          className="hidden"
+        />
+
         <h3 className="hidden sm:block text-[15px] font-semibold text-slate-800 tracking-tight">
           Admin Control Center
         </h3>
@@ -174,6 +215,8 @@ const Topbar = ({ setIsOpen }) => {
             className="w-56 pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-400"
           />
         </div>
+
+
 
         {/* Notification */}
         <button className="relative w-9 h-9 flex items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors shrink-0">
@@ -198,9 +241,17 @@ const Topbar = ({ setIsOpen }) => {
               </span>
             </div>
 
-            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold ring-2 ring-white shadow-sm group-hover:bg-blue-700 transition-colors shrink-0">
-              AU
-            </div>
+            {logo ? (
+              <img
+                src={logo}
+                alt="profile"
+                className="w-8 h-8 rounded-full border border-slate-200 shadow-sm object-cover"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold ring-2 ring-white shadow-sm group-hover:bg-blue-700 transition-colors shrink-0">
+                AU
+              </div>
+            )}
           </div>
 
           {/* Dropdown Menu */}
@@ -225,12 +276,29 @@ const Topbar = ({ setIsOpen }) => {
                   My Profile
                 </button>
                 <button 
+                  onClick={() => navigate('/')}
                   className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
                 >
-                  <Settings className="w-4 h-4 text-slate-400" />
-                  Account Settings
+                  <Globe className="w-4 h-4 text-slate-400" />
+                  Portal
                 </button>
-                
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                  title={logo ? "Change logo" : "Upload logo"}
+                >
+                  <Upload className="w-4 h-4 text-slate-400" />
+                  {logo ? "Change Logo" : "Upload Logo"}
+                </button>
+                {logo && (
+                  <button
+                    onClick={removeLogo}
+                    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                  >
+                    <X className="w-4 h-4 text-slate-400" />
+                    Remove Logo
+                  </button>
+                )}
                 <div className="h-px bg-slate-100 my-1"></div>
                 
                 <button 
