@@ -1,7 +1,7 @@
 from django.db import models
 from apps.hospitals.models import Hospital
 
-# 👨‍⚕️ Doctor
+#  Doctor
 class Doctor(models.Model):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
 
@@ -14,7 +14,7 @@ class Doctor(models.Model):
         return self.name
 
 
-# 🏷️ OPD Category
+#  OPD Category
 class OPDCategory(models.Model):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -23,7 +23,7 @@ class OPDCategory(models.Model):
         return self.name
 
 
-# ⏰ Doctor Availability
+#  Doctor Availability
 class DoctorAvailability(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 

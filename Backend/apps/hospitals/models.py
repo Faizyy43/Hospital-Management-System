@@ -33,3 +33,4 @@ class Bed(models.Model):
 
     def __str__(self):
         return f"{self.hospital.name} - {self.bed_type}"
+    
