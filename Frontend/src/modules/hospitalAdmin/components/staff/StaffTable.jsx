@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Edit2, Component } from "lucide-react";
+import { Edit2, Trash2, Component } from "lucide-react";
 
-const StaffTable = ({ role, data }) => {
+const StaffTable = ({ role, data, onDelete }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -29,12 +29,19 @@ const StaffTable = ({ role, data }) => {
                    <td className="px-6 py-4 font-semibold text-slate-800">{staff.name}</td>
                    <td className="px-6 py-4 font-medium text-slate-600">{staff.shift}</td>
                    <td className="px-6 py-4">
-                     <div className="flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                     <div className="flex items-center justify-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                        <button
                          className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
                          title="Edit Staff Data"
                        >
                          <Edit2 className="w-4 h-4" />
+                       </button>
+                       <button
+                         onClick={() => onDelete(staff.id)}
+                         className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                         title="Delete Staff"
+                       >
+                         <Trash2 className="w-4 h-4" />
                        </button>
                      </div>
                    </td>

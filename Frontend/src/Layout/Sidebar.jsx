@@ -144,6 +144,17 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           <nav className="space-y-1 mb-8">
+
+            {/* <SidebarItem
+              to="/hadmin/appointments"
+              icon={Calendar}
+              label="Appointments"
+              navItem={navItemClass}
+              active={activeClass}
+              indicator={indicatorClass}
+              onClick={handleClick}
+            /> */}
+
             <SidebarItem
               to="/hadmin/patients"
               icon={Users}

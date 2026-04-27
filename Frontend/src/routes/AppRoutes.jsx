@@ -38,13 +38,13 @@ import Footer from "../modules/Patient/components/Footer";
 // 🔥 INLINE NAVBAR LAYOUT
 const NavbarLayout = () => {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex-1 w-full">
+      <div className="flex-1 w-full flex flex-col">
         <Outlet />
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
@@ -63,11 +63,14 @@ const AppRoutes = () => {
       <Route path="/admin/login" element={<MLogin />} />
 
       {/* Proper nested layout */}
-      <Route path="/admin" element={
-        <PrivateRoute role="admin">
-          <AdminLayout />
-        </PrivateRoute>
-      }>
+      <Route path="/admin" 
+      // element={
+      //   <PrivateRoute role="master_admin">
+      //     <AdminLayout />
+      //   </PrivateRoute>
+      // }
+      element={<AdminLayout />}
+      >
         <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="hospitals" element={<HospitalList />} />
@@ -80,11 +83,12 @@ const AppRoutes = () => {
       {/* ❌ NO NAVBAR - STANDALONE LAYOUTS */}
       <Route
         path="/patient-dashboard"
-        element={
-          <PrivateRoute role="patient">
-            <PatientDashboard />
-          </PrivateRoute>
-        }
+        // element={
+        //   <PrivateRoute role="patient">
+        //     <PatientDashboard />
+        //   </PrivateRoute>
+        // }
+        element={<PatientDashboard />}
       />
 
       <Route path="/login" element={<Login />} />
@@ -94,11 +98,12 @@ const AppRoutes = () => {
       {/* 🏥 ADMIN */}
       <Route
         path="/hadmin"
-        element={
-          <PrivateRoute role="hospital">
-            <Layout />
-          </PrivateRoute>
-        }
+        // element={
+        //   <PrivateRoute role="admin">
+        //     <Layout />
+        //   </PrivateRoute>
+        // }
+        element={<Layout />}
       >
         <Route index element={<Hdashboard />} />
         <Route path="patients" element={<Patients />} />

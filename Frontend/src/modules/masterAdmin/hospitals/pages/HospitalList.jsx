@@ -1,26 +1,71 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Building2, MapPin, Users, ChevronRight, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 
+import { getHospitals } from "../hospitalDirectoryService";
+import { mergeHospitalAdminSnapshot } from "../hospitalStorageBridge";
+
+const formatHospital = (hospital) => ({
+  id: hospital._id,
+  name: hospital.name || "Unnamed Hospital",
+  type: hospital.type || "General Facility",
+  status: hospital.status ? hospital.status.charAt(0).toUpperCase() + hospital.status.slice(1) : "Pending",
+  patients: Array.isArray(hospital.patients) ? hospital.patients.length : hospital.patientCount || 0,
+  location: hospital.address || "Address not available",
+});
+
+const isHealthyStatus = (status) => ["approved", "active"].includes(status.toLowerCase());
+
 const HospitalList = () => {
   const [search, setSearch] = useState("");
+  const [hospitals, setHospitals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Professional dummy data
-  const data = [
-    { id: 1, name: "City General Hospital", type: "Multi-Specialty", status: "Active", patients: 4500, location: "Downtown Area", joined: "Oct 2023" },
-    { id: 2, name: "Sunrise Medical Center", type: "Orthopedics", status: "Active", patients: 3200, location: "Westside", joined: "Jan 2024" },
-    { id: 3, name: "Metro Care Hospital", type: "Pediatrics", status: "Pending", patients: 0, location: "North District", joined: "Mar 2024" },
-    { id: 4, name: "St. Jude Clinic", type: "Cardiology", status: "Active", patients: 1200, location: "Eastside", joined: "Nov 2023" },
-  ];
+  useEffect(() => {
+    let isMounted = true;
 
-  const filtered = data.filter((h) =>
-    h.name.toLowerCase().includes(search.toLowerCase())
+    const loadHospitals = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const response = await getHospitals();
+
+        if (isMounted) {
+          setHospitals(response.map(mergeHospitalAdminSnapshot).map(formatHospital));
+        }
+      } catch (loadError) {
+        if (isMounted) {
+          setError(loadError.response?.data?.message || "Unable to load hospitals.");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadHospitals();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const filtered = useMemo(
+    () =>
+      hospitals.filter((hospital) =>
+        [hospital.name, hospital.location, hospital.status]
+          .filter(Boolean)
+          .some((value) => value.toLowerCase().includes(search.toLowerCase())),
+      ),
+    [hospitals, search],
   );
 
   return (
-    <div className="w-full overflow-x-hidden p-4 sm:p-6 md:p-8 max-w-[1600px] mx-auto min-h-screen bg-slate-50/50">
+    <div className="w-full overflow-x-hidden p-4 sm:p-6 md:p-8 max-w-[1600px] mx-auto min-h-screen bg-white">
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -57,6 +102,12 @@ const HospitalList = () => {
           </div>
         </div>
 
+        {/* {error && (
+          <div className="px-4 sm:px-5 py-4 border-b border-red-100 bg-red-50 text-sm font-medium text-red-700">
+            {error}
+          </div>
+        )} */}
+
         {/* Table */}
         <div className="w-full overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[700px]">
@@ -70,7 +121,15 @@ const HospitalList = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {filtered.map((h, i) => (
+              {loading && (
+                <tr>
+                  <td colSpan={5} className="py-12 text-center text-slate-500 bg-slate-50/50">
+                    <p className="font-medium text-slate-800">Loading hospitals...</p>
+                  </td>
+                </tr>
+              )}
+
+              {!loading && filtered.map((h, i) => (
                 <motion.tr 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -99,9 +158,9 @@ const HospitalList = () => {
                   </td>
                   <td className="px-4 sm:px-6 py-3 sm:py-4 text-center">
                     <span className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold border ${
-                      h.status === "Active" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-amber-50 text-amber-700 border-amber-100"
+                      isHealthyStatus(h.status) ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-amber-50 text-amber-700 border-amber-100"
                     }`}>
-                      {h.status === "Active" && <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-emerald-500"></div>}
+                      {isHealthyStatus(h.status) && <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-emerald-500"></div>}
                       {h.status}
                     </span>
                   </td>
@@ -119,7 +178,7 @@ const HospitalList = () => {
                 </motion.tr>
               ))}
               
-              {filtered.length === 0 && (
+              {!loading && filtered.length === 0 && (
                 <tr>
                   <td colSpan={5} className="py-12 text-center text-slate-500 bg-slate-50/50">
                     <Building2 className="w-10 h-10 mx-auto text-slate-300 mb-3" />

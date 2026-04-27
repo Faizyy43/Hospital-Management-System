@@ -1,20 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import PageHeader from "../../../Layout/PageHeader";
 import { Plus, Trash2 } from "lucide-react";
-
-const defaultCategories = [
-  "General Medicine", "Cardiology", "Orthopaedics", "Neurology",
-  "Gynaecology & Obstetrics", "Paediatrics", "Dermatology", "ENT",
-  "Ophthalmology", "Urology", "Nephrology", "Gastroenterology",
-  "Oncology", "Psychiatry", "Pulmonology", "Endocrinology",
-  "Rheumatology", "Dental", "Physiotherapy", "Radiology & Imaging"
-];
+import { readHospitalStorage, writeHospitalStorage } from "../utils/storage";
+import { syncHospitalSnapshot } from "../services/hospitalSnapshotService";
 
 const OPD = () => {
-  const [categories, setCategories] = useState(defaultCategories);
+  const [categories, setCategories] = useState(() => readHospitalStorage("opdCategories"));
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    writeHospitalStorage("opdCategories", categories);
+    syncHospitalSnapshot().catch(() => {});
+  }, [categories]);
 
   const addCategory = () => {
     if (!input.trim() || categories.includes(input.trim())) return;
