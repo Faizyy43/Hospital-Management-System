@@ -130,7 +130,7 @@ const Topbar = ({ setIsOpen }) => {
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-0.5">Master</span>
               </div>
               <img
-                src="https://i.pravatar.cc/40"
+                // src="https://i.pravatar.cc/40"
                 alt="profile"
                 className="w-8 h-8 rounded-full border border-slate-200 shadow-sm"
               />

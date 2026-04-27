@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { UserPlus } from "lucide-react";
 
-const PharmacistForm = () => {
+const PharmacistForm = ({ onAdd }) => {
   const [form, setForm] = useState({
     name: "",
     counter: "",
@@ -12,6 +12,17 @@ const PharmacistForm = () => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = () => {
+    if (!form.name.trim()) return;
+    if (onAdd) onAdd(form);
+    setForm({
+      name: "",
+      counter: "",
+      shift: "",
+      license: "",
+    });
   };
 
   return (
@@ -79,7 +90,7 @@ const PharmacistForm = () => {
       </div>
 
       <div className="mt-8 flex justify-end">
-        <button className="bg-emerald-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1 active:scale-[0.98]">
+        <button onClick={handleSubmit} className="bg-emerald-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1 active:scale-[0.98]">
           Onboard Staff
         </button>
       </div>

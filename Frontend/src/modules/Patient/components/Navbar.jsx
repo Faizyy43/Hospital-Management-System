@@ -13,15 +13,17 @@ export default function Navbar() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const canUsePortalLogo = user && user.role !== "patient";
 
   useEffect(() => {
     try {
       const storedUser = JSON.parse(localStorage.getItem("user"));
       setUser(storedUser);
       const storedLogo = localStorage.getItem("portalLogo");
-      setLogo(storedLogo);
+      setLogo(storedUser && storedUser.role !== "patient" ? storedLogo : null);
     } catch (err) {
       setUser(null);
+      setLogo(null);
     }
   }, []);
 
@@ -65,6 +67,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     setProfileOpen(false);
     navigate("/");
@@ -110,7 +113,7 @@ export default function Navbar() {
               onClick={() => { setProfileOpen(!profileOpen); setMenuOpen(false); }}
               className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 cursor-pointer shadow-sm hover:shadow transition-all focus:outline-none focus:ring-2 focus:ring-blue-100"
             >
-              {logo ? (
+              {canUsePortalLogo && logo ? (
                 <img 
                   src={logo} 
                   alt="Logo" 
@@ -167,7 +170,7 @@ export default function Navbar() {
                       </div>
                       <div className="p-2">
                         <Link
-                          to={user.role === "patient" ? "/patient-dashboard" : user.role === "admin" ? "/admin/dashboard" : "/hadmin"}
+                          to={user.role === "patient" ? "/patient-dashboard" : user.role === "master_admin" ? "/admin/dashboard" : "/hadmin"}
                           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                         >
                           <LayoutDashboard className="w-4 h-4" />

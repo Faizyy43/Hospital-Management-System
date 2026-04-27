@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CalendarPlus } from "lucide-react";
 
 const AppointmentBooking = ({ doctors, appointments, setAppointments }) => {
+  const [patientName, setPatientName] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -15,6 +16,28 @@ const AppointmentBooking = ({ doctors, appointments, setAppointments }) => {
 
   const availableSlots =
     doctor?.slots?.filter(slot => !bookedSlots.includes(slot)) || [];
+
+  const handleConfirm = () => {
+    if (!doctor || !selectedDay || !selectedSlot) return;
+
+    setAppointments([
+      ...appointments,
+      {
+        id: Date.now(),
+        patient: patientName.trim() || "Walk-in Patient",
+        doctorId: doctor.id,
+        doctorName: doctor.name,
+        day: selectedDay,
+        slot: selectedSlot,
+        status: "Scheduled",
+      },
+    ]);
+
+    setPatientName("");
+    setSelectedDoctor("");
+    setSelectedDay("");
+    setSelectedSlot("");
+  };
 
   return (
     <motion.div
@@ -30,10 +53,21 @@ const AppointmentBooking = ({ doctors, appointments, setAppointments }) => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex-1">
+          <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Patient Name</label>
+          <input
+            value={patientName}
+            onChange={(e) => setPatientName(e.target.value)}
+            placeholder="e.g. John Doe"
+            className="w-full bg-slate-50 border border-slate-200 px-3 py-2.5 rounded-lg text-sm text-slate-800 outline-none focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-medium"
+          />
+        </div>
+
         {/* Doctor */}
         <div className="flex-1">
           <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Select Physician</label>
           <select
+            value={selectedDoctor || ""}
             onChange={(e) => setSelectedDoctor(e.target.value)}
             className="w-full bg-slate-50 border border-slate-200 px-3 py-2.5 rounded-lg text-sm text-slate-800 outline-none focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-medium"
           >
@@ -87,6 +121,7 @@ const AppointmentBooking = ({ doctors, appointments, setAppointments }) => {
       <div className="mt-6 flex justify-end">
         <button 
           disabled={!selectedDoctor || !selectedDay || !selectedSlot}
+          onClick={handleConfirm}
           className="bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
         >
           Confirm Appointment

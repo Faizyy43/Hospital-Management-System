@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import StaffTabs from "../components/staff/StaffTabs";
 import NurseForm from "../components/staff/NurseForm";
@@ -8,16 +8,26 @@ import PharmacistForm from "../components/staff/PharmacistForm";
 import AdminForm from "../components/staff/AdminForm";
 import StaffTable from "../components/staff/StaffTable";
 import PageHeader from "../../../Layout/PageHeader";
-import { Users } from "lucide-react";
+import { readHospitalStorage, writeHospitalStorage } from "../utils/storage";
+import { syncHospitalSnapshot } from "../services/hospitalSnapshotService";
 
 const Staff = () => {
   const [activeRole, setActiveRole] = useState("Nurse");
 
-  const [staffList, setStaffList] = useState([]);
+  const [staffList, setStaffList] = useState(() => readHospitalStorage("staff"));
 
   const handleAddStaff = (newStaff) => {
     setStaffList([...staffList, { ...newStaff, role: activeRole, id: Date.now() }]);
   };
+
+  const handleDeleteStaff = (staffId) => {
+    setStaffList((prevStaffList) => prevStaffList.filter((member) => member.id !== staffId));
+  };
+
+  useEffect(() => {
+    writeHospitalStorage("staff", staffList);
+    syncHospitalSnapshot().catch(() => {});
+  }, [staffList]);
 
   const filteredStaff = staffList.filter(s => s.role === activeRole);
 
@@ -48,7 +58,7 @@ const Staff = () => {
 
         {/* Staff List Area */}
         <div className="w-full">
-          <StaffTable role={activeRole} data={filteredStaff} />
+          <StaffTable role={activeRole} data={filteredStaff} onDelete={handleDeleteStaff} />
         </div>
       </div>
     </motion.div>

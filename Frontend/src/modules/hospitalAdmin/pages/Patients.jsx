@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PatientTable from "../components/patients/PatientTable";
 import EditPatientModal from "../components/patients/EditPatientModal";
 import PageHeader from "../../../Layout/PageHeader";
 import { Search } from "lucide-react";
+import { hydrateHospitalStorage, readHospitalStorage, writeHospitalStorage } from "../utils/storage";
+import { getCurrentHospital } from "../services/currentHospitalService";
+import { syncHospitalSnapshot } from "../services/hospitalSnapshotService";
 
 const Patients = () => {
-  const [patients, setPatients] = useState([
-    { id: 1, name: "John Doe", age: 30, disease: "Flu" },
-    { id: 2, name: "Sarah Khan", age: 25, disease: "Fever" },
-  ]);
+  const [patients, setPatients] = useState(() => readHospitalStorage("patients"));
 
   const [editingPatient, setEditingPatient] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,6 +23,34 @@ const Patients = () => {
     );
     setEditingPatient(null);
   };
+
+  useEffect(() => {
+    writeHospitalStorage("patients", patients);
+    syncHospitalSnapshot().catch(() => {});
+  }, [patients]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadPatients = async () => {
+      try {
+        const hospital = await getCurrentHospital();
+        hydrateHospitalStorage(hospital);
+
+        if (isMounted) {
+          setPatients(hospital.patients || []);
+        }
+      } catch {
+        // Keep local fallback when backend data is unavailable.
+      }
+    };
+
+    loadPatients();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredPatients = patients.filter((patient) =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
